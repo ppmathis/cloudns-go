@@ -3,23 +3,40 @@ package cloudns
 import (
 	"context"
 	"net"
+	"strings"
 )
 
-type ZoneType string
-type ZoneKind string
+const zoneAvailableNameserversURL = "/dns/available-name-servers.json"
+const zoneListURL = "/dns/list-zones.json"
+const zoneGetURL = "/dns/get-zone-info.json"
+const zoneTriggerUpdateURL = "/dns/update-zone.json"
+const zoneUpdateStatusURL = "/dns/update-status.json"
+const zoneIsUpdatedURL = "/dns/is-updated.json"
+const zoneSetActiveURL = "/dns/change-status.json"
+const zoneUsageURL = "/dns/get-zones-stats.json"
+const zonePageCountURL = "/dns/get-pages-count.json"
+const zoneRowsPerPage = 100
+
+type ZoneType int
+type ZoneKind int
 
 const (
-	ZoneMaster ZoneType = "master"
-	ZoneSlave  ZoneType = "slave"
-	ZoneParked ZoneType = "parked"
-	ZoneGeoDNS ZoneType = "geodns"
+	ZoneTypeUnknown ZoneType = iota
+	ZoneTypeMaster
+	ZoneTypeSlave
+	ZoneTypeParked
+	ZoneTypeGeoDNS
+)
+const (
+	ZoneKindUnknown ZoneKind = iota
+	ZoneKindDomain
+	ZoneKindIPv4
+	ZoneKindIPv6
 )
 
-const (
-	ZoneDomain ZoneKind = "domain"
-	ZoneIPv4   ZoneKind = "ipv4"
-	ZoneIPv6   ZoneKind = "ipv6"
-)
+type zoneService struct {
+	api *API
+}
 
 type Zone struct {
 	Name     string   `json:"name"`
@@ -43,49 +60,119 @@ type Nameserver struct {
 	DDoSProtected APIBool `json:"ddos_protected"`
 }
 
-func (api *API) AvailableNameservers(ctx context.Context) (results []Nameserver, err error) {
-	err = api.request(ctx, "POST", "/dns/available-name-servers.json", nil, nil, &results)
-	return
+type ZoneUpdateStatus struct {
+	Server    string  `json:"server"`
+	IPv4      string  `json:"ip4"`
+	IPv6      string  `json:"ip6"`
+	IsUpdated APIBool `json:"updated"`
 }
 
-func (api *API) ListZones(ctx context.Context) (results []Zone, err error) {
-	var pageCount int
-	params := HttpParams{"rows-per-page": 100}
+func (svc *zoneService) List(ctx context.Context) ([]Zone, error) {
+	return svc.Search(ctx, "", 0)
+}
 
-	// Get the amount of pages for the current query
-	err = api.request(ctx, "POST", "/dns/get-pages-count.json", params, nil, &pageCount)
-	if err != nil {
-		return
+func (svc *zoneService) Search(ctx context.Context, search string, groupID int) ([]Zone, error) {
+	var err error
+	var pageCount int
+	var pageResults []Zone
+
+	// Build search parameters for zone querying
+	params := HttpParams{"rows-per-page": zoneRowsPerPage}
+	if search != "" {
+		params["search"] = search
+	}
+	if groupID != 0 {
+		params["group-id"] = groupID
 	}
 
-	// Retrieve all pages and gather the results
-	for page := 1; page <= pageCount; page++ {
-		var pageResults []Zone
-		params["page"] = page
+	// Fetch number of available pages
+	err = svc.api.request(ctx, "POST", zonePageCountURL, params, nil, &pageCount)
+	if err != nil {
+		return nil, err
+	}
 
-		err = api.request(ctx, "POST", "/dns/list-zones.json", params, nil, &pageResults)
+	// Fetch all pages iteratively and gather the results together
+	results := make([]Zone, 0, pageCount*zoneRowsPerPage)
+	for pageIndex := 1; pageIndex <= pageCount; pageIndex++ {
+		params["page"] = pageIndex
+		err = svc.api.request(ctx, "POST", zoneListURL, params, nil, &pageResults)
 		if err != nil {
-			return
+			return nil, err
 		}
 
 		results = append(results, pageResults...)
 	}
 
+	return results, nil
+}
+
+func (svc *zoneService) Get(ctx context.Context, zoneName string) (result Zone, err error) {
+	params := HttpParams{"domain-name": zoneName}
+	err = svc.api.request(ctx, "POST", zoneGetURL, params, nil, &result)
 	return
 }
 
-func (api *API) ZoneUsage(ctx context.Context) (result ZoneUsage, err error) {
-	err = api.request(ctx, "POST", "/dns/get-zones-stats.json", nil, nil, &result)
+func (svc *zoneService) TriggerUpdate(ctx context.Context, zoneName string) (result BaseResult, err error) {
+	params := HttpParams{"domain-name": zoneName}
+	err = svc.api.request(ctx, "POST", zoneTriggerUpdateURL, params, nil, &result)
 	return
 }
 
-func (api *API) ZoneInfo(ctx context.Context, name string) (result Zone, err error) {
-	params := HttpParams{"domain-name": name}
-	err = api.request(ctx, "POST", "/dns/get-zone-info.json", params, nil, &result)
+func (svc *zoneService) SetActive(ctx context.Context, zoneName string, isActive bool) (result BaseResult, err error) {
+	params := HttpParams{"domain-name": zoneName, "status": isActive}
+	err = svc.api.request(ctx, "POST", zoneSetActiveURL, params, nil, &result)
 	return
 }
 
-func (api *API) ZoneSetActive(ctx context.Context, name string, isActive bool) error {
-	params := HttpParams{"domain-name": name, "status": isActive}
-	return api.request(ctx, "POST", "/dns/change-status.json", params, nil, nil)
+func (svc *zoneService) IsUpdated(ctx context.Context, zoneName string) (result bool, err error) {
+	params := HttpParams{"domain-name": zoneName}
+	err = svc.api.request(ctx, "POST", zoneIsUpdatedURL, params, nil, &result)
+	return
+}
+
+func (svc *zoneService) GetUpdateStatus(ctx context.Context, zoneName string) (result []ZoneUpdateStatus, err error) {
+	params := HttpParams{"domain-name": zoneName}
+	err = svc.api.request(ctx, "POST", zoneUpdateStatusURL, params, nil, &result)
+	return
+}
+
+func (svc *zoneService) AvailableNameservers(ctx context.Context) (result []Nameserver, err error) {
+	err = svc.api.request(ctx, "POST", zoneAvailableNameserversURL, nil, nil, &result)
+	return
+}
+
+func (svc *zoneService) GetUsage(ctx context.Context) (result ZoneUsage, err error) {
+	err = svc.api.request(ctx, "POST", zoneUsageURL, nil, nil, &result)
+	return
+}
+
+func (zt *ZoneType) UnmarshalJSON(data []byte) error {
+	switch strings.Trim(string(data), `"`) {
+	case "master":
+		*zt = ZoneTypeMaster
+	case "slave":
+		*zt = ZoneTypeSlave
+	case "parked":
+		*zt = ZoneTypeParked
+	case "geodns":
+		*zt = ZoneTypeGeoDNS
+	default:
+		*zt = ZoneTypeUnknown
+	}
+
+	return nil
+}
+func (zk *ZoneKind) UnmarshalJSON(data []byte) error {
+	switch strings.Trim(string(data), `"`) {
+	case "domain":
+		*zk = ZoneKindDomain
+	case "ipv4":
+		*zk = ZoneKindIPv4
+	case "ipv6":
+		*zk = ZoneKindIPv6
+	default:
+		*zk = ZoneKindUnknown
+	}
+
+	return nil
 }

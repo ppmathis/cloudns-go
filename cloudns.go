@@ -14,9 +14,10 @@ import (
 type HttpParams map[string]interface{}
 
 type API struct {
-	baseURL   string
-	userAgent string
+	Zones *zoneService
 
+	baseURL    string
+	userAgent  string
 	auth       *Auth
 	headers    http.Header
 	params     HttpParams
@@ -43,6 +44,8 @@ func New(options ...Option) (*API, error) {
 	if err := api.processOptions(options...); err != nil {
 		return nil, ErrInvalidOptions.wrap(err)
 	}
+
+	api.Zones = &zoneService{api: api}
 
 	return api, nil
 }
