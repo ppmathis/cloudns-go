@@ -119,7 +119,13 @@ func (svc *zoneService) TriggerUpdate(ctx context.Context, zoneName string) (res
 }
 
 func (svc *zoneService) SetActive(ctx context.Context, zoneName string, isActive bool) (result BaseResult, err error) {
-	params := HttpParams{"domain-name": zoneName, "status": isActive}
+	params := HttpParams{"domain-name": zoneName}
+	if isActive {
+		params["status"] = 1
+	} else {
+		params["status"] = 0
+	}
+
 	err = svc.api.request(ctx, "POST", zoneSetActiveURL, params, nil, &result)
 	return
 }
