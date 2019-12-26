@@ -14,7 +14,8 @@ import (
 type HttpParams map[string]interface{}
 
 type API struct {
-	Zones *zoneService
+	Zones   *zoneService
+	Records *recordService
 
 	baseURL    string
 	userAgent  string
@@ -46,6 +47,7 @@ func New(options ...Option) (*API, error) {
 	}
 
 	api.Zones = &zoneService{api: api}
+	api.Records = &recordService{api: api}
 
 	return api, nil
 }
