@@ -43,3 +43,7 @@ func (auth *Auth) GetParams() HttpParams {
 
 	return params
 }
+
+func (auth *Auth) getAllParamKeys() []string {
+	return []string{"auth-id", "sub-auth-id", "sub-auth-user", "auth-password"}
+}
