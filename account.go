@@ -6,7 +6,7 @@ import (
 )
 
 type accountService struct {
-	api *API
+	api *Client
 }
 
 func (svc *accountService) Login(ctx context.Context) (result BaseResult, err error) {

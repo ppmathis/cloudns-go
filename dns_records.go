@@ -31,7 +31,7 @@ const (
 )
 
 type recordService struct {
-	api *API
+	api *Client
 }
 
 type RecordMap map[int]Record

@@ -13,7 +13,7 @@ import (
 
 type HttpParams map[string]interface{}
 
-type API struct {
+type Client struct {
 	Account *accountService
 	Zones   *zoneService
 	Records *recordService
@@ -32,8 +32,8 @@ type BaseResult struct {
 	StatusMessage     string `json:"statusMessage"`
 }
 
-func New(options ...Option) (*API, error) {
-	api := &API{
+func New(options ...Option) (*Client, error) {
+	client := &Client{
 		baseURL:   "https://api.cloudns.net",
 		userAgent: "cloudns-go",
 
@@ -43,20 +43,20 @@ func New(options ...Option) (*API, error) {
 		httpClient: http.DefaultClient,
 	}
 
-	if err := api.processOptions(options...); err != nil {
+	if err := client.processOptions(options...); err != nil {
 		return nil, ErrInvalidOptions.wrap(err)
 	}
 
-	api.Account = &accountService{api: api}
-	api.Zones = &zoneService{api: api}
-	api.Records = &recordService{api: api}
+	client.Account = &accountService{api: client}
+	client.Zones = &zoneService{api: client}
+	client.Records = &recordService{api: client}
 
-	return api, nil
+	return client, nil
 }
 
-func (api *API) processOptions(options ...Option) error {
+func (c *Client) processOptions(options ...Option) error {
 	for _, option := range options {
-		if err := option(api); err != nil {
+		if err := option(c); err != nil {
 			return err
 		}
 	}
@@ -64,13 +64,13 @@ func (api *API) processOptions(options ...Option) error {
 	return nil
 }
 
-func (api *API) request(ctx context.Context, method, endpoint string, params HttpParams, headers http.Header, target interface{}) error {
-	req, err := api.makeRequest(ctx, method, endpoint, params, headers)
+func (c *Client) request(ctx context.Context, method, endpoint string, params HttpParams, headers http.Header, target interface{}) error {
+	req, err := c.makeRequest(ctx, method, endpoint, params, headers)
 	if err != nil {
 		return err
 	}
 
-	_, err = api.doRequest(req, target)
+	_, err = c.doRequest(req, target)
 	if err != nil {
 		return err
 	}
@@ -78,23 +78,23 @@ func (api *API) request(ctx context.Context, method, endpoint string, params Htt
 	return nil
 }
 
-func (api *API) makeRequest(ctx context.Context, method, endpoint string, params HttpParams, headers http.Header) (*http.Request, error) {
-	req, err := http.NewRequestWithContext(ctx, method, api.baseURL+endpoint, nil)
+func (c *Client) makeRequest(ctx context.Context, method, endpoint string, params HttpParams, headers http.Header) (*http.Request, error) {
+	req, err := http.NewRequestWithContext(ctx, method, c.baseURL+endpoint, nil)
 	if err != nil {
 		return nil, ErrHttpRequest.wrap(err)
 	}
 
 	mergedHeaders := make(http.Header)
-	copyHeaders(mergedHeaders, api.headers)
+	copyHeaders(mergedHeaders, c.headers)
 	copyHeaders(mergedHeaders, headers)
 
 	req.Header = mergedHeaders
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", api.userAgent)
+	req.Header.Set("User-Agent", c.userAgent)
 
 	mergedParams := make(map[string]interface{})
-	copyParams(mergedParams, api.params)
-	copyParams(mergedParams, api.auth.GetParams())
+	copyParams(mergedParams, c.params)
+	copyParams(mergedParams, c.auth.GetParams())
 	copyParams(mergedParams, params)
 
 	if containsString(method, []string{"HEAD", "GET", "DELETE"}) {
@@ -117,8 +117,8 @@ func (api *API) makeRequest(ctx context.Context, method, endpoint string, params
 	return req, nil
 }
 
-func (api *API) doRequest(req *http.Request, target interface{}) (*http.Response, error) {
-	resp, err := api.httpClient.Do(req)
+func (c *Client) doRequest(req *http.Request, target interface{}) (*http.Response, error) {
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (api *API) doRequest(req *http.Request, target interface{}) (*http.Response
 	}
 
 	fmt.Println(string(respBody))
-	if err := api.checkBaseResult(respBody); err != nil {
+	if err := c.checkBaseResult(respBody); err != nil {
 		return nil, err
 	}
 
@@ -143,7 +143,7 @@ func (api *API) doRequest(req *http.Request, target interface{}) (*http.Response
 	return resp, nil
 }
 
-func (api *API) checkBaseResult(respBody []byte) error {
+func (c *Client) checkBaseResult(respBody []byte) error {
 	respBody = bytes.TrimLeft(respBody, " \t\r\n") // whitespace according to RFC7159.2
 
 	switch {

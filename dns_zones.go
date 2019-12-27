@@ -35,7 +35,7 @@ const (
 )
 
 type zoneService struct {
-	api *API
+	api *Client
 }
 
 type Zone struct {
