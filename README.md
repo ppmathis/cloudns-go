@@ -36,3 +36,32 @@ which currently consists of:
 
 You can find more information about the specific methods and structures of cloudns-go by visiting the
 [official documentation on godoc.org](https://godoc.org/github.com/snapserv/cloudns-go). 
+
+
+## Example
+```go
+package main
+
+import (
+	cloudns "github.com/snapserv/cloudns-go"
+	"context"
+	"fmt"
+)
+
+func main() {
+	client, _ := cloudns.New(
+        cloudns.AuthUserID(42, "cloudns-rocks"),
+    )
+
+    zone, _ := client.Zones.Get(context.TODO(), "api-example.com")
+    result1, _ := client.Zones.SetActive(context.TODO(), zone.Name, true)
+    
+    record := cloudns.NewRecord("localhost", "A", "1.2.3.4", 3600)
+    result2, _ := client.Records.Create(context.TODO(), zone.Name, record)
+
+    fmt.Printf("Zone: %+v\n", zone)
+    fmt.Printf("Record: %+v\n", record)
+    fmt.Printf("Result of `Zones.SetActive()`: %+v\n", result1)
+    fmt.Printf("Result of `Records.Create()`: %+v\n", result2)
+}
+```
