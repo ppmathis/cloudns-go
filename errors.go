@@ -5,12 +5,13 @@ import (
 	"strings"
 )
 
+// Constant errors which can be returned by cloudns-go when something goes wrong
 const (
-	ErrHttpRequest            = constError("http request failed")
-	ErrApiInvocation          = constError("api invocation failed")
-	ErrIllegalArgument        = constError("illegal argument provided")
-	ErrInvalidOptions         = constError("invalid options provided")
-	ErrMultipleCredentials    = constError("more than one kind of credentials specified")
+	ErrHTTPRequest         = constError("http request failed")
+	ErrAPIInvocation       = constError("api invocation failed")
+	ErrIllegalArgument     = constError("illegal argument provided")
+	ErrInvalidOptions      = constError("invalid options provided")
+	ErrMultipleCredentials = constError("more than one kind of credentials specified")
 )
 
 type constError string

@@ -17,9 +17,10 @@ const zoneUsageURL = "/dns/get-zones-stats.json"
 const zonePageCountURL = "/dns/get-pages-count.json"
 const zoneRowsPerPage = 100
 
+// ZoneType is an enumeration of all supported zone types
 type ZoneType int
-type ZoneKind int
 
+// Enumeration values for ZoneType
 const (
 	ZoneTypeUnknown ZoneType = iota
 	ZoneTypeMaster
@@ -27,6 +28,11 @@ const (
 	ZoneTypeParked
 	ZoneTypeGeoDNS
 )
+
+// ZoneKind is an enumeration of all supported zone kinds
+type ZoneKind int
+
+// Enumeration values for ZoneKind
 const (
 	ZoneKindUnknown ZoneKind = iota
 	ZoneKindDomain
@@ -34,10 +40,12 @@ const (
 	ZoneKindIPv6
 )
 
+// ZoneService is a service object which groups all operations related to ClouDNS zone management
 type ZoneService struct {
 	api *Client
 }
 
+// Zone represents a ClouDNS record according to the official API docs
 type Zone struct {
 	Name     string   `json:"name"`
 	Type     ZoneType `json:"type"`
@@ -45,11 +53,13 @@ type Zone struct {
 	IsActive APIBool  `json:"status"`
 }
 
+// ZoneUsage represents the current zone usage for a ClouDNS account
 type ZoneUsage struct {
 	Current int `json:"count,string"`
 	Limit   int `json:"limit,string"`
 }
 
+// Nameserver represents a ClouDNS nameserver according to the official API docs
 type Nameserver struct {
 	Type          string  `json:"type"`
 	Name          string  `json:"name"`
@@ -60,6 +70,7 @@ type Nameserver struct {
 	DDoSProtected APIBool `json:"ddos_protected"`
 }
 
+// ZoneUpdateStatus represents the current update status of a nameserver for a given zone
 type ZoneUpdateStatus struct {
 	Server    string  `json:"server"`
 	IPv4      string  `json:"ip4"`
@@ -67,17 +78,21 @@ type ZoneUpdateStatus struct {
 	IsUpdated APIBool `json:"updated"`
 }
 
+// List returns all zones
+// Official Docs: https://www.cloudns.net/wiki/article/50/
 func (svc *ZoneService) List(ctx context.Context) ([]Zone, error) {
 	return svc.Search(ctx, "", 0)
 }
 
+// Search returns all zones matching a given name and/or group ID
+// Official Docs: https://www.cloudns.net/wiki/article/50/
 func (svc *ZoneService) Search(ctx context.Context, search string, groupID int) ([]Zone, error) {
 	var err error
 	var pageCount int
 	var pageResults []Zone
 
 	// Build search parameters for zone querying
-	params := HttpParams{"rows-per-page": zoneRowsPerPage}
+	params := HTTPParams{"rows-per-page": zoneRowsPerPage}
 	if search != "" {
 		params["search"] = search
 	}
@@ -106,20 +121,26 @@ func (svc *ZoneService) Search(ctx context.Context, search string, groupID int) 
 	return results, nil
 }
 
+// Get returns a zone with a given name
+// Official Docs: https://www.cloudns.net/wiki/article/134/
 func (svc *ZoneService) Get(ctx context.Context, zoneName string) (result Zone, err error) {
-	params := HttpParams{"domain-name": zoneName}
+	params := HTTPParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", zoneGetURL, params, nil, &result)
 	return
 }
 
-func (svc *ZoneService) TriggerUpdate(ctx context.Context, zoneName string) (result BaseResult, err error) {
-	params := HttpParams{"domain-name": zoneName}
+// TriggerUpdate triggers a manual update for a given zone
+// Official Docs: https://www.cloudns.net/wiki/article/135/
+func (svc *ZoneService) TriggerUpdate(ctx context.Context, zoneName string) (result StatusResult, err error) {
+	params := HTTPParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", zoneTriggerUpdateURL, params, nil, &result)
 	return
 }
 
-func (svc *ZoneService) SetActive(ctx context.Context, zoneName string, isActive bool) (result BaseResult, err error) {
-	params := HttpParams{"domain-name": zoneName}
+// SetActive enables or disables a zone with the given name
+// Official Docs: https://www.cloudns.net/wiki/article/55/
+func (svc *ZoneService) SetActive(ctx context.Context, zoneName string, isActive bool) (result StatusResult, err error) {
+	params := HTTPParams{"domain-name": zoneName}
 	if isActive {
 		params["status"] = 1
 	} else {
@@ -130,28 +151,37 @@ func (svc *ZoneService) SetActive(ctx context.Context, zoneName string, isActive
 	return
 }
 
+// IsUpdated returns a boolean if the given zone has been updated to all ClouDNS nameservers
+// Official Docs: https://www.cloudns.net/wiki/article/54/
 func (svc *ZoneService) IsUpdated(ctx context.Context, zoneName string) (result bool, err error) {
-	params := HttpParams{"domain-name": zoneName}
+	params := HTTPParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", zoneIsUpdatedURL, params, nil, &result)
 	return
 }
 
+// GetUpdateStatus returns a list of all nameservers for the given zone with their update status
+// Official Docs: https://www.cloudns.net/wiki/article/53/
 func (svc *ZoneService) GetUpdateStatus(ctx context.Context, zoneName string) (result []ZoneUpdateStatus, err error) {
-	params := HttpParams{"domain-name": zoneName}
+	params := HTTPParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", zoneUpdateStatusURL, params, nil, &result)
 	return
 }
 
+// AvailableNameservers returns all nameservers available for the current account
+// Official Docs: https://www.cloudns.net/wiki/article/47/
 func (svc *ZoneService) AvailableNameservers(ctx context.Context) (result []Nameserver, err error) {
 	err = svc.api.request(ctx, "POST", zoneAvailableNameserversURL, nil, nil, &result)
 	return
 }
 
+// GetUsage returns the current zone usage for the current account (actual usage and maximum zones for current plan)
+// Official Docs: https://www.cloudns.net/wiki/article/52/
 func (svc *ZoneService) GetUsage(ctx context.Context) (result ZoneUsage, err error) {
 	err = svc.api.request(ctx, "POST", zoneUsageURL, nil, nil, &result)
 	return
 }
 
+// UnmarshalJSON converts the ClouDNS zone type into the correct ZoneType enumeration value
 func (zt *ZoneType) UnmarshalJSON(data []byte) error {
 	switch strings.Trim(string(data), `"`) {
 	case "master":
@@ -168,6 +198,8 @@ func (zt *ZoneType) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+
+// UnmarshalJSON converts the ClouDNS zone type into the correct ZoneType enumeration value
 func (zk *ZoneKind) UnmarshalJSON(data []byte) error {
 	switch strings.Trim(string(data), `"`) {
 	case "domain":

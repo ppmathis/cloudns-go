@@ -1,5 +1,9 @@
 package cloudns
 
+// AuthType is an enumeration of the various ways of authenticating against the ClouDNS API
+type AuthType int
+
+// Enumeration values for AuthType
 const (
 	AuthTypeNone AuthType = iota
 	AuthTypeUserID
@@ -7,9 +11,7 @@ const (
 	AuthTypeSubUserName
 )
 
-type AuthRole int
-type AuthType int
-
+// Auth provides methods for turning human-friendly credentials into API parameters
 type Auth struct {
 	Type        AuthType
 	UserID      int
@@ -18,12 +20,15 @@ type Auth struct {
 	Password    string
 }
 
+// NewAuth instantiates an empty Auth which contains no credentials / AuthTypeNone
 func NewAuth() *Auth {
 	return &Auth{Type: AuthTypeNone}
 }
 
-func (auth *Auth) GetParams() HttpParams {
-	params := make(HttpParams)
+// GetParams returns the correct API parameters for the ClouDNS API which should be provided by either query parameters
+// (when using GET) or the POST body as JSON
+func (auth *Auth) GetParams() HTTPParams {
+	params := make(HTTPParams)
 
 	switch auth.Type {
 	case AuthTypeNone:
@@ -44,6 +49,8 @@ func (auth *Auth) GetParams() HttpParams {
 	return params
 }
 
+// getAllParamKeys returns all keys involved in authentication, which is being used to filter credentials out of
+// automatically generated test fixtures
 func (auth *Auth) getAllParamKeys() []string {
 	return []string{"auth-id", "sub-auth-id", "sub-auth-user", "auth-password"}
 }

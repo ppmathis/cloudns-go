@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+// APIBool is a custom type representing the way how ClouDNS treats booleans in their API, as they usually appear as
+// 1 or 0 (as a number or a string) instead of actual JSON booleans
 type APIBool bool
 
 func containsString(needle string, haystack []string) bool {
@@ -17,6 +19,7 @@ func containsString(needle string, haystack []string) bool {
 	return false
 }
 
+// MarshalJSON converts a APIBool into a 0 or 1 as a number according to the ClouDNS API docs
 func (b APIBool) MarshalJSON() ([]byte, error) {
 	if b == true {
 		return []byte("1"), nil
@@ -25,6 +28,7 @@ func (b APIBool) MarshalJSON() ([]byte, error) {
 	return []byte("0"), nil
 }
 
+// UnmarshalJSON converts a boolean from the ClouDNS API into a sanitized Go boolean
 func (b *APIBool) UnmarshalJSON(data []byte) error {
 	stringValue := strings.ToLower(strings.Trim(string(data), "\""))
 	if stringValue == "true" || stringValue == "1" {

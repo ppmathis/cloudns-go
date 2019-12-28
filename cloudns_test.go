@@ -42,7 +42,7 @@ func setup(t *testing.T) func() {
 	// Initialize API client with go-vcr as HTTP client transport
 	client, err = New(
 		buildAuthFromEnv(),
-		HttpClient(&http.Client{Transport: vcr}),
+		HTTPClient(&http.Client{Transport: vcr}),
 		UserAgent("cloudns-go/test"),
 	)
 	if err != nil {

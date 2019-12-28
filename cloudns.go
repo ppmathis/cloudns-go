@@ -11,8 +11,12 @@ import (
 	"net/url"
 )
 
-type HttpParams map[string]interface{}
+// HTTPParams represents a map with string keys and a freely-chosen type. It is used to collect either GET or POST
+// parameters for the ClouDNS API.
+type HTTPParams map[string]interface{}
 
+// Client provides the main object for interacting with the ClouDNS API. All service objects and settings are being
+// stored underneath within this structure.
 type Client struct {
 	Account *AccountService
 	Zones   *ZoneService
@@ -22,16 +26,18 @@ type Client struct {
 	userAgent  string
 	auth       *Auth
 	headers    http.Header
-	params     HttpParams
+	params     HTTPParams
 	httpClient *http.Client
 }
 
-type BaseResult struct {
+// StatusResult is a common result used by all ClouDNS API methods for either
+type StatusResult struct {
 	Status            string `json:"status"`
 	StatusDescription string `json:"statusDescription"`
 	StatusMessage     string `json:"statusMessage"`
 }
 
+// New instantiates a new ClouDNS client for interacting with the API
 func New(options ...Option) (*Client, error) {
 	client := &Client{
 		baseURL:   "https://api.cloudns.net",
@@ -39,7 +45,7 @@ func New(options ...Option) (*Client, error) {
 
 		auth:       NewAuth(),
 		headers:    make(http.Header),
-		params:     make(HttpParams),
+		params:     make(HTTPParams),
 		httpClient: http.DefaultClient,
 	}
 
@@ -64,7 +70,7 @@ func (c *Client) processOptions(options ...Option) error {
 	return nil
 }
 
-func (c *Client) request(ctx context.Context, method, endpoint string, params HttpParams, headers http.Header, target interface{}) error {
+func (c *Client) request(ctx context.Context, method, endpoint string, params HTTPParams, headers http.Header, target interface{}) error {
 	req, err := c.makeRequest(ctx, method, endpoint, params, headers)
 	if err != nil {
 		return err
@@ -78,10 +84,10 @@ func (c *Client) request(ctx context.Context, method, endpoint string, params Ht
 	return nil
 }
 
-func (c *Client) makeRequest(ctx context.Context, method, endpoint string, params HttpParams, headers http.Header) (*http.Request, error) {
+func (c *Client) makeRequest(ctx context.Context, method, endpoint string, params HTTPParams, headers http.Header) (*http.Request, error) {
 	req, err := http.NewRequestWithContext(ctx, method, c.baseURL+endpoint, nil)
 	if err != nil {
-		return nil, ErrHttpRequest.wrap(err)
+		return nil, ErrHTTPRequest.wrap(err)
 	}
 
 	mergedHeaders := make(http.Header)
@@ -107,7 +113,7 @@ func (c *Client) makeRequest(ctx context.Context, method, endpoint string, param
 	} else {
 		jsonBody, err := json.Marshal(mergedParams)
 		if err != nil {
-			return nil, ErrHttpRequest.wrap(err)
+			return nil, ErrHTTPRequest.wrap(err)
 		}
 
 		req.Header.Set("Content-Type", "application/json")
@@ -126,7 +132,7 @@ func (c *Client) doRequest(req *http.Request, target interface{}) (*http.Respons
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, ErrHttpRequest.wrap(err)
+		return nil, ErrHTTPRequest.wrap(err)
 	}
 
 	if err := c.checkBaseResult(respBody); err != nil {
@@ -135,7 +141,7 @@ func (c *Client) doRequest(req *http.Request, target interface{}) (*http.Respons
 
 	if target != nil {
 		if err := json.Unmarshal(respBody, target); err != nil {
-			return nil, ErrHttpRequest.wrap(err)
+			return nil, ErrHTTPRequest.wrap(err)
 		}
 	}
 
@@ -148,10 +154,10 @@ func (c *Client) checkBaseResult(respBody []byte) error {
 	switch {
 	// If JSON response contains top-level object
 	case len(respBody) > 0 && respBody[0] == '{':
-		// Attempt to unmarshal JSON response into `BaseResult`
-		var result BaseResult
+		// Attempt to unmarshal JSON response into `StatusResult`
+		var result StatusResult
 		if err := json.Unmarshal(respBody, &result); err != nil {
-			return ErrApiInvocation.wrap(err)
+			return ErrAPIInvocation.wrap(err)
 		}
 
 		// Skip further processing if API response does not indicate failure
@@ -161,11 +167,11 @@ func (c *Client) checkBaseResult(respBody []byte) error {
 
 		// Return an API error in all other cases, based on either `StatusDescription` or `StatusMessage`
 		if result.StatusDescription != "" {
-			return ErrApiInvocation.wrap(errors.New(result.StatusDescription))
+			return ErrAPIInvocation.wrap(errors.New(result.StatusDescription))
 		} else if result.StatusMessage != "" {
-			return ErrApiInvocation.wrap(errors.New(result.StatusMessage))
+			return ErrAPIInvocation.wrap(errors.New(result.StatusMessage))
 		} else {
-			return ErrApiInvocation.wrap(errors.New(string(respBody)))
+			return ErrAPIInvocation.wrap(errors.New(string(respBody)))
 		}
 	}
 
