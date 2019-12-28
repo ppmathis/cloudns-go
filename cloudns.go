@@ -129,7 +129,6 @@ func (c *Client) doRequest(req *http.Request, target interface{}) (*http.Respons
 		return nil, ErrHttpRequest.wrap(err)
 	}
 
-	fmt.Println(string(respBody))
 	if err := c.checkBaseResult(respBody); err != nil {
 		return nil, err
 	}

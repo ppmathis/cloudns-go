@@ -61,6 +61,12 @@ func setup(t *testing.T) func() {
 }
 
 func buildAuthFromEnv() Option {
+	if os.Getenv("CLOUDNS_USER_ID") == "" || os.Getenv("CLOUDNS_PASSWORD") == "" {
+		return func(api *Client) error {
+			return nil
+		}
+	}
+
 	userPassword := os.Getenv("CLOUDNS_PASSWORD")
 	userID, err := strconv.Atoi(os.Getenv("CLOUDNS_USER_ID"))
 	if err != nil {
