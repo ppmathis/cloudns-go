@@ -28,6 +28,19 @@ func TestWrapError_Error(t *testing.T) {
 	assert.Equal(t, "Hello: World", wrapErr.Error(), "wrapErr should be described as `Hello: World`")
 }
 
+func TestWrapError_Error_InnerNil(t *testing.T) {
+	// given
+	var innerErr error = nil
+	outerErr := constError("Hello")
+
+	// when
+	noWrapErr := outerErr.wrap(innerErr)
+
+	// then
+	assert.Error(t, noWrapErr, "noWrapErr should contain err")
+	assert.Equal(t, "Hello", noWrapErr.Error(), "noWrapErr should be described as `Hello`")
+}
+
 func TestWrapError_Unwrap(t *testing.T) {
 	// given
 	innerErr := constError("World")

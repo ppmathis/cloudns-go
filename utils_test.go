@@ -42,3 +42,10 @@ func TestAPIBool_UnmarshalJSON(t *testing.T) {
 	test(`"0"`, false)
 	test(`"false"`, false)
 }
+
+func TestAPIBool_UnmarshalJSON_Invalid(t *testing.T) {
+	var actual APIBool
+
+	err := json.Unmarshal([]byte(`["wat"]`), &actual)
+	assert.Error(t, err, "JSON unmarshalling of invalid APIBool should fail")
+}
