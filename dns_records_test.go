@@ -11,9 +11,6 @@ import (
 var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 var randomCharset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-const testDomain string = "api-example.com"
-const testTTL int = 3600
-
 func createRandomString(length int) string {
 	result := make([]byte, length)
 	for i := range result {

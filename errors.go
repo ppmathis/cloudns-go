@@ -11,8 +11,6 @@ const (
 	ErrIllegalArgument        = constError("illegal argument provided")
 	ErrInvalidOptions         = constError("invalid options provided")
 	ErrMultipleCredentials    = constError("more than one kind of credentials specified")
-	ErrMissingCredentials     = constError("no credentials specified, unable to authenticate")
-	ErrInsufficientPrivileges = constError("insufficient privileges for current api credentials")
 )
 
 type constError string

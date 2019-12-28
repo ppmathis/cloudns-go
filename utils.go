@@ -17,8 +17,8 @@ func containsString(needle string, haystack []string) bool {
 	return false
 }
 
-func (b *APIBool) MarshalJSON() ([]byte, error) {
-	if *b == true {
+func (b APIBool) MarshalJSON() ([]byte, error) {
+	if b == true {
 		return []byte("1"), nil
 	}
 

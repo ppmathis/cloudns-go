@@ -13,6 +13,9 @@ import (
 	"testing"
 )
 
+const testDomain string = "api-example.com"
+const testTTL int = 3600
+
 var (
 	vcr    *recorder.Recorder
 	client *Client
