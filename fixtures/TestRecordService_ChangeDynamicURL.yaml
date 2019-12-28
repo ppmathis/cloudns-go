@@ -1,0 +1,173 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"pRxYZaKSEpzHy2jw","port":0,"priority":0,"record":"127.0.0.1","record-type":"A","ttl":3600,"weight":0}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/add-record.json
+    method: POST
+  response:
+    body: '{"status":"Success","statusDescription":"The record was added successfully.","data":{"id":194582282}}'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:48 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"pRxYZaKSEpzHy2jw","type":"A"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/records.json
+    method: POST
+  response:
+    body: '{"194582282":{"id":"194582282","type":"A","host":"prxyzaksepzhy2jw","record":"127.0.0.1","dynamicurl_status":0,"failover":"0","ttl":"3600","status":1}}'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:48 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":194582282}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/get-dynamic-url.json
+    method: POST
+  response:
+    body: '{"host":"prxyzaksepzhy2jw.api-example.com","url":"https:\/\/ipv4.cloudns.net\/api\/dynamicURL\/?q=MTU3NjY3NzoxOTQ1ODIyODI6MjZiYzZkOWFlMjU4M2Y3NThmMWUyZDdmOWQ1MGEwMmIxYjVmNGFmNDcxYzYyN2FiNDljMmQ4MDcxYTVlODU0MQ"}'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:50 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":194582282}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/change-dynamic-url.json
+    method: POST
+  response:
+    body: '{"host":"prxyzaksepzhy2jw.api-example.com","url":"https:\/\/ipv4.cloudns.net\/api\/dynamicURL\/?q=MTU3NjY3NzoxOTQ1ODIyODI6NmQ1YzI5NTBhZTBlYzVhZDRjNzkyODM3OTk1MmU0ZTYwMDZmOWU4NWQ1ODczZWQ2YjJiZDY0YWY5NWNkZWRiOA"}'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:52 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":194582282}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/delete-record.json
+    method: POST
+  response:
+    body: '{"status":"Success","statusDescription":"The record was deleted successfully."}'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:52 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""

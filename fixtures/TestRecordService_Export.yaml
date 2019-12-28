@@ -1,0 +1,38 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/records-export.json
+    method: POST
+  response:
+    body: '{"status":"Success","zone":"$ORIGIN api-example.com.\n@\t300\tIN\tSOA\tns1.ssx.li.
+      wfiuXJSA2TbP2qt1.api-example.com. 2019124109 7200 1800 1209600 300\n@\t3600\tIN\tA\t1.2.3.4\n@\t3600\tIN\tNS\tdns1.cloudns.net.\n@\t3600\tIN\tNS\tdns2.cloudns.net.\n@\t3600\tIN\tNS\tdns5.cloudns.net.\n@\t3600\tIN\tNS\tdns6.cloudns.net.\n"}'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:45 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""

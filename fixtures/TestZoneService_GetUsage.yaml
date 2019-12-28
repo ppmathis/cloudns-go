@@ -1,0 +1,37 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/get-zones-stats.json
+    method: POST
+  response:
+    body: '{"count":"24","limit":"50"}'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:53 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""

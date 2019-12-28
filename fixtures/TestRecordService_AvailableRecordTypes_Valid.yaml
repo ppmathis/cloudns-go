@@ -1,0 +1,173 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","zone-type":"domain"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/get-available-record-types.json
+    method: POST
+  response:
+    body: '["A","AAAA","MX","CNAME","TXT","SPF","NS","SRV","WR","ALIAS","RP","SSHFP","NAPTR","CAA","TLSA"]'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:52 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","zone-type":"reverse"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/get-available-record-types.json
+    method: POST
+  response:
+    body: '["PTR","NAPTR","NS","CNAME"]'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:52 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","zone-type":"reverse"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/get-available-record-types.json
+    method: POST
+  response:
+    body: '["PTR","NAPTR","NS","CNAME"]'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:52 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","zone-type":"domain"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/get-available-record-types.json
+    method: POST
+  response:
+    body: '["A","AAAA","MX","CNAME","TXT","SPF","NS","SRV","WR","ALIAS","RP","SSHFP","NAPTR","CAA","TLSA"]'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:52 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","zone-type":"parked"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/get-available-record-types.json
+    method: POST
+  response:
+    body: '["NS","TXT","SPF","MX"]'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:53 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""

@@ -1,0 +1,37 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - cloudns-go/test
+    url: https://api.cloudns.net/dns/soa-details.json
+    method: POST
+  response:
+    body: '{"serialNumber":"2019124089","primaryNS":"ns1.ssx.li","adminMail":"h7TT84lu33iEsG0S@api-example.com","refresh":"7200","retry":"1800","expire":"1209600","defaultTTL":"300"}'
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 28 Dec 2019 20:11:44 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status: 200 OK
+    code: 200
+    duration: ""
