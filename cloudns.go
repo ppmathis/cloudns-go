@@ -14,9 +14,9 @@ import (
 type HttpParams map[string]interface{}
 
 type Client struct {
-	Account *accountService
-	Zones   *zoneService
-	Records *recordService
+	Account *AccountService
+	Zones   *ZoneService
+	Records *RecordService
 
 	baseURL    string
 	userAgent  string
@@ -47,9 +47,9 @@ func New(options ...Option) (*Client, error) {
 		return nil, ErrInvalidOptions.wrap(err)
 	}
 
-	client.Account = &accountService{api: client}
-	client.Zones = &zoneService{api: client}
-	client.Records = &recordService{api: client}
+	client.Account = &AccountService{api: client}
+	client.Zones = &ZoneService{api: client}
+	client.Records = &RecordService{api: client}
 
 	return client, nil
 }

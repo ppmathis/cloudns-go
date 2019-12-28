@@ -34,7 +34,7 @@ const (
 	ZoneKindIPv6
 )
 
-type zoneService struct {
+type ZoneService struct {
 	api *Client
 }
 
@@ -67,11 +67,11 @@ type ZoneUpdateStatus struct {
 	IsUpdated APIBool `json:"updated"`
 }
 
-func (svc *zoneService) List(ctx context.Context) ([]Zone, error) {
+func (svc *ZoneService) List(ctx context.Context) ([]Zone, error) {
 	return svc.Search(ctx, "", 0)
 }
 
-func (svc *zoneService) Search(ctx context.Context, search string, groupID int) ([]Zone, error) {
+func (svc *ZoneService) Search(ctx context.Context, search string, groupID int) ([]Zone, error) {
 	var err error
 	var pageCount int
 	var pageResults []Zone
@@ -106,19 +106,19 @@ func (svc *zoneService) Search(ctx context.Context, search string, groupID int) 
 	return results, nil
 }
 
-func (svc *zoneService) Get(ctx context.Context, zoneName string) (result Zone, err error) {
+func (svc *ZoneService) Get(ctx context.Context, zoneName string) (result Zone, err error) {
 	params := HttpParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", zoneGetURL, params, nil, &result)
 	return
 }
 
-func (svc *zoneService) TriggerUpdate(ctx context.Context, zoneName string) (result BaseResult, err error) {
+func (svc *ZoneService) TriggerUpdate(ctx context.Context, zoneName string) (result BaseResult, err error) {
 	params := HttpParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", zoneTriggerUpdateURL, params, nil, &result)
 	return
 }
 
-func (svc *zoneService) SetActive(ctx context.Context, zoneName string, isActive bool) (result BaseResult, err error) {
+func (svc *ZoneService) SetActive(ctx context.Context, zoneName string, isActive bool) (result BaseResult, err error) {
 	params := HttpParams{"domain-name": zoneName}
 	if isActive {
 		params["status"] = 1
@@ -130,24 +130,24 @@ func (svc *zoneService) SetActive(ctx context.Context, zoneName string, isActive
 	return
 }
 
-func (svc *zoneService) IsUpdated(ctx context.Context, zoneName string) (result bool, err error) {
+func (svc *ZoneService) IsUpdated(ctx context.Context, zoneName string) (result bool, err error) {
 	params := HttpParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", zoneIsUpdatedURL, params, nil, &result)
 	return
 }
 
-func (svc *zoneService) GetUpdateStatus(ctx context.Context, zoneName string) (result []ZoneUpdateStatus, err error) {
+func (svc *ZoneService) GetUpdateStatus(ctx context.Context, zoneName string) (result []ZoneUpdateStatus, err error) {
 	params := HttpParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", zoneUpdateStatusURL, params, nil, &result)
 	return
 }
 
-func (svc *zoneService) AvailableNameservers(ctx context.Context) (result []Nameserver, err error) {
+func (svc *ZoneService) AvailableNameservers(ctx context.Context) (result []Nameserver, err error) {
 	err = svc.api.request(ctx, "POST", zoneAvailableNameserversURL, nil, nil, &result)
 	return
 }
 
-func (svc *zoneService) GetUsage(ctx context.Context) (result ZoneUsage, err error) {
+func (svc *ZoneService) GetUsage(ctx context.Context) (result ZoneUsage, err error) {
 	err = svc.api.request(ctx, "POST", zoneUsageURL, nil, nil, &result)
 	return
 }

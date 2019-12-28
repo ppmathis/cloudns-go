@@ -30,7 +30,7 @@ const (
 	RecordFormatTinyDNS
 )
 
-type recordService struct {
+type RecordService struct {
 	api *Client
 }
 
@@ -68,13 +68,13 @@ type DynamicURL struct {
 	URL  string `json:"url"`
 }
 
-func (svc *recordService) GetSOA(ctx context.Context, zoneName string) (result SOA, err error) {
+func (svc *RecordService) GetSOA(ctx context.Context, zoneName string) (result SOA, err error) {
 	params := HttpParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", recordSOAGetURL, params, nil, &result)
 	return
 }
 
-func (svc *recordService) UpdateSOA(ctx context.Context, zoneName string, soa SOA) (result BaseResult, err error) {
+func (svc *RecordService) UpdateSOA(ctx context.Context, zoneName string, soa SOA) (result BaseResult, err error) {
 	params := soa.AsParams()
 	params["domain-name"] = zoneName
 
@@ -82,11 +82,11 @@ func (svc *recordService) UpdateSOA(ctx context.Context, zoneName string, soa SO
 	return
 }
 
-func (svc *recordService) List(ctx context.Context, zoneName string) (result RecordMap, err error) {
+func (svc *RecordService) List(ctx context.Context, zoneName string) (result RecordMap, err error) {
 	return svc.Search(ctx, zoneName, "", "")
 }
 
-func (svc *recordService) Search(ctx context.Context, zoneName, host, recordType string) (result RecordMap, err error) {
+func (svc *RecordService) Search(ctx context.Context, zoneName, host, recordType string) (result RecordMap, err error) {
 	// Build search parameters for record querying
 	params := HttpParams{"domain-name": zoneName}
 	if host != "" {
@@ -108,7 +108,7 @@ func (svc *recordService) Search(ctx context.Context, zoneName, host, recordType
 	return
 }
 
-func (svc *recordService) Create(ctx context.Context, zoneName string, record Record) (result BaseResult, err error) {
+func (svc *RecordService) Create(ctx context.Context, zoneName string, record Record) (result BaseResult, err error) {
 	params := record.AsParams()
 	params["domain-name"] = zoneName
 
@@ -116,7 +116,7 @@ func (svc *recordService) Create(ctx context.Context, zoneName string, record Re
 	return
 }
 
-func (svc *recordService) Update(ctx context.Context, zoneName string, recordID int, record Record) (result BaseResult, err error) {
+func (svc *RecordService) Update(ctx context.Context, zoneName string, recordID int, record Record) (result BaseResult, err error) {
 	params := record.AsParams()
 	params["domain-name"] = zoneName
 	params["record-id"] = recordID
@@ -125,13 +125,13 @@ func (svc *recordService) Update(ctx context.Context, zoneName string, recordID 
 	return
 }
 
-func (svc *recordService) Delete(ctx context.Context, zoneName string, recordID int) (result BaseResult, err error) {
+func (svc *RecordService) Delete(ctx context.Context, zoneName string, recordID int) (result BaseResult, err error) {
 	params := HttpParams{"domain-name": zoneName, "record-id": recordID}
 	err = svc.api.request(ctx, "POST", recordDeleteURL, params, nil, &result)
 	return
 }
 
-func (svc *recordService) SetActive(ctx context.Context, zoneName string, recordID int, isActive bool) (result BaseResult, err error) {
+func (svc *RecordService) SetActive(ctx context.Context, zoneName string, recordID int, isActive bool) (result BaseResult, err error) {
 	params := HttpParams{"domain-name": zoneName, "record-id": recordID}
 	if isActive {
 		params["status"] = 1
@@ -143,7 +143,7 @@ func (svc *recordService) SetActive(ctx context.Context, zoneName string, record
 	return
 }
 
-func (svc *recordService) CopyFromZone(ctx context.Context, zoneName, sourceZoneName string, overwrite bool) (result BaseResult, err error) {
+func (svc *RecordService) CopyFromZone(ctx context.Context, zoneName, sourceZoneName string, overwrite bool) (result BaseResult, err error) {
 	params := HttpParams{"domain-name": zoneName, "from-domain": sourceZoneName}
 	if overwrite {
 		params["delete-current-records"] = 1
@@ -155,7 +155,7 @@ func (svc *recordService) CopyFromZone(ctx context.Context, zoneName, sourceZone
 	return
 }
 
-func (svc *recordService) Import(ctx context.Context, zoneName string, format RecordFormat, content string, overwrite bool) (result BaseResult, err error) {
+func (svc *RecordService) Import(ctx context.Context, zoneName string, format RecordFormat, content string, overwrite bool) (result BaseResult, err error) {
 	params := HttpParams{"domain-name": zoneName, "content": content}
 
 	switch format {
@@ -177,43 +177,43 @@ func (svc *recordService) Import(ctx context.Context, zoneName string, format Re
 	return
 }
 
-func (svc *recordService) ImportTransfer(ctx context.Context, zoneName, server string) (result BaseResult, err error) {
+func (svc *RecordService) ImportTransfer(ctx context.Context, zoneName, server string) (result BaseResult, err error) {
 	params := HttpParams{"domain-name": zoneName, "server": server}
 	err = svc.api.request(ctx, "POST", recordImportTransferURL, params, nil, &result)
 	return
 }
 
-func (svc *recordService) Export(ctx context.Context, zoneName string) (result RecordsExport, err error) {
+func (svc *RecordService) Export(ctx context.Context, zoneName string) (result RecordsExport, err error) {
 	params := HttpParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", recordExportURL, params, nil, &result)
 	return
 }
 
-func (svc *recordService) GetDynamicURL(ctx context.Context, zoneName string, recordID int) (result DynamicURL, err error) {
+func (svc *RecordService) GetDynamicURL(ctx context.Context, zoneName string, recordID int) (result DynamicURL, err error) {
 	params := HttpParams{"domain-name": zoneName, "record-id": recordID}
 	err = svc.api.request(ctx, "POST", recordGetDynamicURL, params, nil, &result)
 	return
 }
 
-func (svc *recordService) ChangeDynamicURL(ctx context.Context, zoneName string, recordID int) (result DynamicURL, err error) {
+func (svc *RecordService) ChangeDynamicURL(ctx context.Context, zoneName string, recordID int) (result DynamicURL, err error) {
 	params := HttpParams{"domain-name": zoneName, "record-id": recordID}
 	err = svc.api.request(ctx, "POST", recordChangeDynamicURL, params, nil, &result)
 	return
 }
 
-func (svc *recordService) DisableDynamicURL(ctx context.Context, zoneName string, recordID int) (result BaseResult, err error) {
+func (svc *RecordService) DisableDynamicURL(ctx context.Context, zoneName string, recordID int) (result BaseResult, err error) {
 	params := HttpParams{"domain-name": zoneName, "record-id": recordID}
 	err = svc.api.request(ctx, "POST", recordDisableDynamicURL, params, nil, &result)
 	return
 }
 
-func (svc *recordService) AvailableTTLs(ctx context.Context, zoneName string) (result []int, err error) {
+func (svc *RecordService) AvailableTTLs(ctx context.Context, zoneName string) (result []int, err error) {
 	params := HttpParams{"domain-name": zoneName}
 	err = svc.api.request(ctx, "POST", recordAvailableTTLsURL, params, nil, &result)
 	return
 }
 
-func (svc *recordService) AvailableRecordTypes(ctx context.Context, zoneType ZoneType, zoneKind ZoneKind) (result []string, err error) {
+func (svc *RecordService) AvailableRecordTypes(ctx context.Context, zoneType ZoneType, zoneKind ZoneKind) (result []string, err error) {
 	params := HttpParams{}
 	isAuthoritative := zoneType == ZoneTypeMaster || zoneType == ZoneTypeGeoDNS
 	isParked := zoneType == ZoneTypeParked
