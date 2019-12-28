@@ -49,7 +49,7 @@ import (
 )
 
 func main() {
-	client, _ := cloudns.New(
+    client, _ := cloudns.New(
         cloudns.AuthUserID(42, "cloudns-rocks"),
     )
 
