@@ -41,6 +41,7 @@ func TestAPIBool_UnmarshalJSON(t *testing.T) {
 	test(`0`, false)
 	test(`"0"`, false)
 	test(`"false"`, false)
+	test(`""`, false)
 }
 
 func TestAPIBool_UnmarshalJSON_Invalid(t *testing.T) {

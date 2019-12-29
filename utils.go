@@ -33,7 +33,7 @@ func (b *APIBool) UnmarshalJSON(data []byte) error {
 	stringValue := strings.ToLower(strings.Trim(string(data), "\""))
 	if stringValue == "true" || stringValue == "1" {
 		*b = true
-	} else if stringValue == "false" || stringValue == "0" {
+	} else if stringValue == "false" || stringValue == "0" || stringValue == "" {
 		*b = false
 	} else {
 		return fmt.Errorf("could not unmarshal boolean from invalid input: %s", stringValue)
