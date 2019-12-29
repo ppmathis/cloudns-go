@@ -2,8 +2,11 @@ package cloudns
 
 import (
 	"errors"
+	"fmt"
+	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"net/url"
+	"strings"
 	"testing"
 	"time"
 )
@@ -303,4 +306,143 @@ func TestRecordService_AvailableRecordTypes_Invalid(t *testing.T) {
 	if err == nil || !errors.Is(err, ErrIllegalArgument) {
 		t.Fatalf("Expected ErrIllegalArgument from Records.AvailableRecordTypes() with invalid zone type/kind, got: %v", err)
 	}
+}
+
+func TestRecordService_RecordTypes(t *testing.T) {
+	teardown := setup(t)
+	defer teardown()
+
+	testRecordType := func(recordType string, initial, updated Record) {
+		var err error
+
+		// Override test-specific values for initial and updated record
+		initial.RecordType = recordType
+		initial.TTL = 60
+		if initial.Host == "" {
+			initial.Host = "%s"
+		}
+		initial.Host = fmt.Sprintf(initial.Host, strings.ToLower(createRandomString(16)))
+
+		updated.RecordType = initial.RecordType
+		updated.Host = initial.Host
+		updated.TTL = 300
+
+		// Create the test record using the ClouDNS API
+		_, err = client.Records.Create(ctx, testDomain, initial)
+		assert.NoError(t, err, "creating test record should not fail")
+
+		// Search for the created test record
+		initialRecords, err := client.Records.Search(ctx, testDomain, initial.Host, initial.RecordType)
+		assert.NoError(t, err, "searching for initial test record should not fail")
+		assert.Len(t, initialRecords, 1, "result should contain a single record")
+		initialRecord := initialRecords.AsSlice()[0]
+
+		// Ensure to cleanup test record when test ends
+		defer func() {
+			_, err := client.Records.Delete(ctx, testDomain, initialRecord.ID)
+			assert.NoError(t, err, "deleting test record should not fail during cleanup")
+		}()
+
+		// Update the provided initial and record structs with API-provided values
+		initial.ID = initialRecord.ID
+		initial.IsActive = initialRecord.IsActive
+		initial.Host = initialRecord.Host
+		updated.ID = initialRecord.ID
+		updated.IsActive = initialRecord.IsActive
+		updated.Host = initialRecord.Host
+
+		// Ensure the current record matches the provided initial record
+		assert.EqualValues(t, initial, initialRecord, "created test record should match provided initial data")
+
+		// Update the record using the provided struct
+		_, err = client.Records.Update(ctx, testDomain, initialRecord.ID, updated)
+		assert.NoError(t, err, "updating test record should not fail")
+
+		// Search for the updated test record
+		updatedRecords, err := client.Records.Search(ctx, testDomain, updated.Host, updated.RecordType)
+		assert.NoError(t, err, "searching for updated test record should not fail")
+		assert.Len(t, updatedRecords, 1, "result should contain a single record")
+		updatedRecord := updatedRecords.AsSlice()[0]
+
+		// Ensure the current record matches the provided updated record
+		assert.EqualValues(t, initialRecord.ID, updatedRecord.ID, "updated test record should have same ID as initial test record")
+		assert.EqualValues(t, updated, updatedRecord, "updated test record should match provided update data")
+	}
+
+	testRecordType("A",
+		Record{Record: "192.0.2.100"},
+		Record{Record: "192.0.2.200"},
+	)
+	testRecordType("AAAA",
+		Record{Record: "2001:db8::100"},
+		Record{Record: "2001:db8::200"},
+	)
+	testRecordType("MX",
+		Record{Record: "mx1.local", Priority: 100},
+		Record{Record: "mx2.local", Priority: 200},
+	)
+	testRecordType("CNAME",
+		Record{Record: "server1.local"},
+		Record{Record: "server2.local"},
+	)
+	testRecordType("TXT",
+		Record{Record: "Hello"},
+		Record{Record: "World"},
+	)
+	testRecordType("NS",
+		Record{Record: "ns1.local"},
+		Record{Record: "ns2.local"},
+	)
+	testRecordType("SRV",
+		Record{Host: "_%s._tcp", Record: "srv1.local", Priority: 10, Weight: 20, Port: 30},
+		Record{Record: "srv2.local", Priority: 40, Weight: 50, Port: 60},
+	)
+	testRecordType("WR",
+		Record{Record: "http://www1.local", WebRedirect: WebRedirect{
+			IsFrame: true, FrameTitle: "T", FrameKeywords: "K", FrameDescription: "D",
+		}},
+		Record{Record: "http://www2.local", WebRedirect: WebRedirect{
+			IsFrame: false, SavePath: true, RedirectType: 302,
+		}},
+	)
+	testRecordType("ALIAS",
+		Record{Record: "www1.local"},
+		Record{Record: "www2.local"},
+	)
+	testRecordType("RP",
+		Record{RP: RP{Mail: "admin1@mail.local", TXT: "txt1.local"}},
+		Record{RP: RP{Mail: "admin2@mail.local", TXT: "txt2.local"}},
+	)
+	testRecordType("SSHFP",
+		Record{Record: "4fca1fe60ec4fca4053504f4fcab0d5d7c99bd0f", SSHFP: SSHFP{
+			Algorithm: 1, Type: 1,
+		}},
+		Record{Record: "1357acf64348f3f7bd0942ba75878ebd3a75af979007f059741d29f95c4a0b80", SSHFP: SSHFP{
+			Algorithm: 3, Type: 2,
+		}},
+	)
+	testRecordType("NAPTR",
+		Record{NAPTR: NAPTR{
+			Order: 10, Preference: 20, Flags: "U", Service: "svc1.local", Regexp: "Hello",
+		}},
+		Record{NAPTR: NAPTR{
+			Order: 30, Preference: 40, Flags: "S", Service: "svc2.local", Replacement: "World",
+		}},
+	)
+	testRecordType("CAA",
+		Record{CAA: CAA{
+			Flag: 0, Type: "issue", Value: "ca1.local",
+		}},
+		Record{CAA: CAA{
+			Flag: 128, Type: "issuewild", Value: "ca2.local",
+		}},
+	)
+	testRecordType("TLSA",
+		Record{Host: "_443._tcp.%s", Record: "53472ce4477a2b2f17085ff9f0b07ecad2091d25a9ec02dda622c741e62c75e4ee8dea577db822caa32935a86e52827c51bf000a65506d4f760dab7712ed9a25", TLSA: TLSA{
+			Usage: 0, Selector: 1, MatchingType: 2,
+		}},
+		Record{Record: "078a656e3670499c991bb0274682058af7bdc05fc462c605f0f8958179816cd7", TLSA: TLSA{
+			Usage: 2, Selector: 0, MatchingType: 1,
+		}},
+	)
 }

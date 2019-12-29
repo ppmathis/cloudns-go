@@ -65,27 +65,27 @@ type Record struct {
 // RP represents parameters specifically for RP records
 type RP struct {
 	Mail string `json:"mail,omitempty"`
-	Text string `json:"txt,omitempty"`
+	TXT  string `json:"txt,omitempty"`
 }
 
 // SSHFP represents parameters specifically for SSHFP records
 type SSHFP struct {
 	Algorithm uint8 `json:"algorithm,string,omitempty"`
-	Type      uint8 `json:"fptype,string,omitempty"`
+	Type      uint8 `json:"fp_type,string,omitempty"`
 }
 
 // CAA represents parameters specifically for CAA records
 type CAA struct {
-	Flag  uint   `json:"caa_flag,string,omitempty"`
+	Flag  uint8   `json:"caa_flag,string,omitempty"`
 	Type  string `json:"caa_type,omitempty"`
 	Value string `json:"caa_value,omitempty"`
 }
 
 // TLSA represents parameters specifically for TLSA records
 type TLSA struct {
-	Usage        string `json:"tlsa_usage,omitempty"`
-	Selector     string `json:"tlsa_selector,omitempty"`
-	MatchingType string `json:"tlsa_matching_type,omitempty"`
+	Usage        uint8 `json:"tlsa_usage,string,omitempty"`
+	Selector     uint8 `json:"tlsa_selector,string,omitempty"`
+	MatchingType uint8 `json:"tlsa_matching_type,string,omitempty"`
 }
 
 // WebRedirect represents parameters specifically for web redirect records
@@ -375,15 +375,17 @@ func (rec Record) AsParams() HTTPParams {
 		params["weight"] = rec.Weight
 		params["port"] = rec.Port
 	case "WR":
-		params["frame"], _ = rec.WebRedirect.IsFrame.MarshalJSON()
+		isFrame, _ := rec.WebRedirect.IsFrame.MarshalJSON()
+
+		params["save-path"] = rec.WebRedirect.SavePath
+		params["redirect-type"] = rec.WebRedirect.RedirectType
+		params["frame"] = string(isFrame)
 		params["frame-title"] = rec.WebRedirect.FrameTitle
 		params["frame-keywords"] = rec.WebRedirect.FrameKeywords
 		params["frame-description"] = rec.WebRedirect.FrameDescription
-		params["save-path"] = rec.SavePath
-		params["redirect-type"] = rec.RedirectType
 	case "RP":
 		params["mail"] = rec.RP.Mail
-		params["txt"] = rec.RP.Text
+		params["txt"] = rec.RP.TXT
 	case "SSHFP":
 		params["algorithm"] = rec.SSHFP.Algorithm
 		params["fptype"] = rec.SSHFP.Type
@@ -395,6 +397,13 @@ func (rec Record) AsParams() HTTPParams {
 		params["caa_flag"] = rec.CAA.Flag
 		params["caa_type"] = rec.CAA.Type
 		params["caa_value"] = rec.CAA.Value
+	case "NAPTR":
+		params["order"] = rec.NAPTR.Order
+		params["pref"] = rec.NAPTR.Preference
+		params["flag"] = rec.NAPTR.Flags
+		params["params"] = rec.NAPTR.Service
+		params["regexp"] = rec.NAPTR.Regexp
+		params["replace"] = rec.NAPTR.Replacement
 	}
 
 	return params
