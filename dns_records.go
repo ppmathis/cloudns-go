@@ -49,9 +49,65 @@ type Record struct {
 	TTL        int     `json:"ttl,string"`
 	IsActive   APIBool `json:"status"`
 
-	Priority int `json:"priority,omitempty"`
-	Weight   int `json:"weight,omitempty"`
-	Port     int `json:"port,omitempty"`
+	Priority         uint16 `json:"priority,string,omitempty"`
+	Weight           uint16 `json:"weight,string,omitempty"`
+	Port             uint16 `json:"port,string,omitempty"`
+	GeoDNSLocationID int    `json:"geodns-location,omitempty"`
+
+	RP
+	CAA
+	NAPTR
+	TLSA
+	SSHFP
+	WebRedirect
+}
+
+// RP represents parameters specifically for RP records
+type RP struct {
+	Mail string `json:"mail,omitempty"`
+	Text string `json:"txt,omitempty"`
+}
+
+// SSHFP represents parameters specifically for SSHFP records
+type SSHFP struct {
+	Algorithm uint8 `json:"algorithm,string,omitempty"`
+	Type      uint8 `json:"fptype,string,omitempty"`
+}
+
+// CAA represents parameters specifically for CAA records
+type CAA struct {
+	Flag  uint   `json:"caa_flag,string,omitempty"`
+	Type  string `json:"caa_type,omitempty"`
+	Value string `json:"caa_value,omitempty"`
+}
+
+// TLSA represents parameters specifically for TLSA records
+type TLSA struct {
+	Usage        string `json:"tlsa_usage,omitempty"`
+	Selector     string `json:"tlsa_selector,omitempty"`
+	MatchingType string `json:"tlsa_matching_type,omitempty"`
+}
+
+// WebRedirect represents parameters specifically for web redirect records
+type WebRedirect struct {
+	MobileMeta   APIBool `json:"mobile_meta"`
+	SavePath     APIBool `json:"save_path,omitempty"`
+	RedirectType int     `json:"redirect_type,string,omitempty"`
+
+	IsFrame          APIBool `json:"frame,omitempty"`
+	FrameTitle       string  `json:"frame_title,omitempty"`
+	FrameKeywords    string  `json:"frame_keywords,omitempty"`
+	FrameDescription string  `json:"frame_description,omitempty"`
+}
+
+// NAPTR represents parameters specifically for NAPTR records
+type NAPTR struct {
+	Order       uint16 `json:"order,string,omitempty"`
+	Preference  uint16 `json:"pref,string,omitempty"`
+	Flags       string `json:"flag"`
+	Service     string `json:"params"`
+	Regexp      string `json:"regexp"`
+	Replacement string `json:"replace"`
 }
 
 // SOA represents the SOA record of a ClouDNS zone
@@ -304,15 +360,44 @@ func (soa SOA) AsParams() HTTPParams {
 
 // AsParams returns the HTTP parameters for a record for use within the other API methods
 func (rec Record) AsParams() HTTPParams {
-	return HTTPParams{
+	params := HTTPParams{
 		"host":        rec.Host,
 		"record":      rec.Record,
 		"record-type": rec.RecordType,
 		"ttl":         rec.TTL,
-		"priority":    rec.Priority,
-		"weight":      rec.Weight,
-		"port":        rec.Port,
 	}
+
+	switch rec.RecordType {
+	case "MX":
+		params["priority"] = rec.Priority
+	case "SRV":
+		params["priority"] = rec.Priority
+		params["weight"] = rec.Weight
+		params["port"] = rec.Port
+	case "WR":
+		params["frame"], _ = rec.WebRedirect.IsFrame.MarshalJSON()
+		params["frame-title"] = rec.WebRedirect.FrameTitle
+		params["frame-keywords"] = rec.WebRedirect.FrameKeywords
+		params["frame-description"] = rec.WebRedirect.FrameDescription
+		params["save-path"] = rec.SavePath
+		params["redirect-type"] = rec.RedirectType
+	case "RP":
+		params["mail"] = rec.RP.Mail
+		params["txt"] = rec.RP.Text
+	case "SSHFP":
+		params["algorithm"] = rec.SSHFP.Algorithm
+		params["fptype"] = rec.SSHFP.Type
+	case "TLSA":
+		params["tlsa_usage"] = rec.TLSA.Usage
+		params["tlsa_selector"] = rec.TLSA.Selector
+		params["tlsa_matching_type"] = rec.TLSA.MatchingType
+	case "CAA":
+		params["caa_flag"] = rec.CAA.Flag
+		params["caa_type"] = rec.CAA.Type
+		params["caa_value"] = rec.CAA.Value
+	}
+
+	return params
 }
 
 // AsSlice converts a RecordMap to a slice of records for easier handling
