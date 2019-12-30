@@ -56,7 +56,7 @@ func main() {
     zone, _ := client.Zones.Get(context.TODO(), "api-example.com")
     result1, _ := client.Zones.SetActive(context.TODO(), zone.Name, true)
     
-    record := cloudns.NewRecord("localhost", "A", "1.2.3.4", 3600)
+    record := cloudns.NewRecord(RecordTypeA, "localhost", "1.2.3.4", 3600)
     result2, _ := client.Records.Create(context.TODO(), zone.Name, record)
 
     fmt.Printf("Zone: %+v\n", zone)

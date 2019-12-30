@@ -2,7 +2,6 @@ package cloudns
 
 import (
 	"errors"
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"net/url"
@@ -24,14 +23,14 @@ func createRandomString(length int) string {
 
 func createTestRecord(t *testing.T) Record {
 	recordName := createRandomString(16)
-	record := NewRecord(recordName, "A", "127.0.0.1", testTTL)
+	record := NewRecord(RecordTypeA, recordName, "127.0.0.1", testTTL)
 
 	_, err := client.Records.Create(ctx, testDomain, record)
 	if err != nil {
 		t.Fatalf("could not create test record: %v", err)
 	}
 
-	records, err := client.Records.Search(ctx, testDomain, recordName, "A")
+	records, err := client.Records.Search(ctx, testDomain, recordName, RecordTypeA)
 	if err != nil {
 		t.Fatalf("could not list records for determining test record: %v", err)
 	}
@@ -97,7 +96,7 @@ func TestRecordService_Create(t *testing.T) {
 	teardown := setup(t)
 	defer teardown()
 
-	record := NewRecord("localhost", "A", "127.0.0.1", testTTL)
+	record := NewRecord(RecordTypeA, "localhost", "127.0.0.1", testTTL)
 	_, err := client.Records.Create(ctx, testDomain, record)
 	if err != nil {
 		t.Fatalf("Records.Create() returned error: %v", err)
@@ -312,18 +311,12 @@ func TestRecordService_RecordTypes(t *testing.T) {
 	teardown := setup(t)
 	defer teardown()
 
-	testRecordType := func(recordType string, initial, updated Record) {
+	testRecordUpdate := func(initial, updated Record) {
 		var err error
 
 		// Override test-specific values for initial and updated record
-		initial.RecordType = recordType
 		initial.TTL = 60
-		if initial.Host == "" {
-			initial.Host = "%s"
-		}
-		initial.Host = fmt.Sprintf(initial.Host, strings.ToLower(createRandomString(16)))
-
-		updated.RecordType = initial.RecordType
+		initial.Host = initial.Host + strings.ToLower(createRandomString(16))
 		updated.Host = initial.Host
 		updated.TTL = 300
 
@@ -369,80 +362,64 @@ func TestRecordService_RecordTypes(t *testing.T) {
 		assert.EqualValues(t, updated, updatedRecord, "updated test record should match provided update data")
 	}
 
-	testRecordType("A",
-		Record{Record: "192.0.2.100"},
-		Record{Record: "192.0.2.200"},
+	testRecordUpdate(
+		NewRecordA("", "192.0.2.100", 0),
+		NewRecordA("", "192.0.2.200", 0),
 	)
-	testRecordType("AAAA",
-		Record{Record: "2001:db8::100"},
-		Record{Record: "2001:db8::200"},
+	testRecordUpdate(
+		NewRecordAAAA("", "2001:db8::100", 0),
+		NewRecordAAAA("", "2001:db8::200", 0),
 	)
-	testRecordType("MX",
-		Record{Record: "mx1.local", Priority: 100},
-		Record{Record: "mx2.local", Priority: 200},
+	testRecordUpdate(
+		NewRecordMX("", 100, "mx1.local", 0),
+		NewRecordMX("", 200, "mx2.local", 0),
 	)
-	testRecordType("CNAME",
-		Record{Record: "server1.local"},
-		Record{Record: "server2.local"},
+	testRecordUpdate(
+		NewRecordCNAME("", "server1.local", 0),
+		NewRecordCNAME("", "server2.local", 0),
 	)
-	testRecordType("TXT",
-		Record{Record: "Hello"},
-		Record{Record: "World"},
+	testRecordUpdate(
+		NewRecordTXT("", "Hello", 0),
+		NewRecordTXT("", "World", 0),
 	)
-	testRecordType("NS",
-		Record{Record: "ns1.local"},
-		Record{Record: "ns2.local"},
+	testRecordUpdate(
+		NewRecordNS("", "ns1.local", 0),
+		NewRecordNS("", "ns2.local", 0),
 	)
-	testRecordType("SRV",
-		Record{Host: "_%s._tcp", Record: "srv1.local", Priority: 10, Weight: 20, Port: 30},
-		Record{Record: "srv2.local", Priority: 40, Weight: 50, Port: 60},
+	testRecordUpdate(
+		NewRecordSRV("_test._tcp.", 10, 20, 30, "srv1.local", 0),
+		NewRecordSRV("_test._tcp.", 40, 50, 60, "srv2.local", 0),
 	)
-	testRecordType("WR",
-		Record{Record: "http://www1.local", WebRedirect: WebRedirect{
+	testRecordUpdate(
+		NewRecordWebRedirect("", "http://www1.local", WebRedirect{
 			IsFrame: true, FrameTitle: "T", FrameKeywords: "K", FrameDescription: "D",
-		}},
-		Record{Record: "http://www2.local", WebRedirect: WebRedirect{
+		}, 0),
+		NewRecordWebRedirect("", "http://www2.local", WebRedirect{
 			IsFrame: false, SavePath: true, RedirectType: 302,
-		}},
+		}, 0),
 	)
-	testRecordType("ALIAS",
-		Record{Record: "www1.local"},
-		Record{Record: "www2.local"},
+	testRecordUpdate(
+		NewRecordALIAS("", "www1.local", 0),
+		NewRecordALIAS("", "www2.local", 0),
 	)
-	testRecordType("RP",
-		Record{RP: RP{Mail: "admin1@mail.local", TXT: "txt1.local"}},
-		Record{RP: RP{Mail: "admin2@mail.local", TXT: "txt2.local"}},
+	testRecordUpdate(
+		NewRecordRP("", "admin1@mail.local", "txt1.local", 0),
+		NewRecordRP("", "admin2@mail.local", "txt2.local", 0),
 	)
-	testRecordType("SSHFP",
-		Record{Record: "4fca1fe60ec4fca4053504f4fcab0d5d7c99bd0f", SSHFP: SSHFP{
-			Algorithm: 1, Type: 1,
-		}},
-		Record{Record: "1357acf64348f3f7bd0942ba75878ebd3a75af979007f059741d29f95c4a0b80", SSHFP: SSHFP{
-			Algorithm: 3, Type: 2,
-		}},
+	testRecordUpdate(
+		NewRecordSSHFP("", 1, 1, "4fca1fe60ec4fca4053504f4fcab0d5d7c99bd0f", 0),
+		NewRecordSSHFP("", 3, 2, "1357acf64348f3f7bd0942ba75878ebd3a75af979007f059741d29f95c4a0b80", 0),
 	)
-	testRecordType("NAPTR",
-		Record{NAPTR: NAPTR{
-			Order: 10, Preference: 20, Flags: "U", Service: "svc1.local", Regexp: "Hello",
-		}},
-		Record{NAPTR: NAPTR{
-			Order: 30, Preference: 40, Flags: "S", Service: "svc2.local", Replacement: "World",
-		}},
+	testRecordUpdate(
+		NewRecordNAPTR("", 10, 20, "U", "svc1.local", "Hello", "", 0),
+		NewRecordNAPTR("", 30, 40, "S", "svc2.local", "", "World", 0),
 	)
-	testRecordType("CAA",
-		Record{CAA: CAA{
-			Flag: 0, Type: "issue", Value: "ca1.local",
-		}},
-		Record{CAA: CAA{
-			Flag: 128, Type: "issuewild", Value: "ca2.local",
-		}},
+	testRecordUpdate(
+		NewRecordCAA("", 0, "issue", "ca1.local", 0),
+		NewRecordCAA("", 128, "issuewild", "ca2.local", 0),
 	)
-	testRecordType("TLSA",
-		Record{Host: "_443._tcp.%s", Record: "53472ce4477a2b2f17085ff9f0b07ecad2091d25a9ec02dda622c741e62c75e4ee8dea577db822caa32935a86e52827c51bf000a65506d4f760dab7712ed9a25", TLSA: TLSA{
-			Usage: 0, Selector: 1, MatchingType: 2,
-		}},
-		Record{Record: "078a656e3670499c991bb0274682058af7bdc05fc462c605f0f8958179816cd7", TLSA: TLSA{
-			Usage: 2, Selector: 0, MatchingType: 1,
-		}},
+	testRecordUpdate(
+		NewRecordTLSA("_443._tcp.", 0, 1, 2, "53472ce4477a2b2f17085ff9f0b07ecad2091d25a9ec02dda622c741e62c75e4ee8dea577db822caa32935a86e52827c51bf000a65506d4f760dab7712ed9a25", 0),
+		NewRecordTLSA("_443._tcp.", 2, 0, 1, "078a656e3670499c991bb0274682058af7bdc05fc462c605f0f8958179816cd7", 0),
 	)
 }
