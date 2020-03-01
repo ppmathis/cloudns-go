@@ -1,4 +1,4 @@
-package cloudns
+package cloudns-go
 
 import (
 	"bytes"

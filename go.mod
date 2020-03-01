@@ -1,4 +1,4 @@
-module cloudns-go
+module github.com/snapserv/cloudns-go
 
 go 1.13
 
