@@ -1,4 +1,4 @@
-package cloudns-go
+package cloudns
 
 import (
 	"bytes"
@@ -31,10 +31,15 @@ type Client struct {
 }
 
 // StatusResult is a common result used by all ClouDNS API methods for either
+
+type DataResult struct {
+	ID int `json:"id"`
+}
 type StatusResult struct {
-	Status            string `json:"status"`
-	StatusDescription string `json:"statusDescription"`
-	StatusMessage     string `json:"statusMessage"`
+	Status            string     `json:"status"`
+	StatusDescription string     `json:"statusDescription"`
+	StatusMessage     string     `json:"statusMessage"`
+	StatusData        DataResult `json:"data"`
 }
 
 // New instantiates a new ClouDNS client for interacting with the API
