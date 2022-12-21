@@ -21,7 +21,7 @@ func containsString(needle string, haystack []string) bool {
 
 // MarshalJSON converts a APIBool into a 0 or 1 as a number according to the ClouDNS API docs
 func (b APIBool) MarshalJSON() ([]byte, error) {
-	if b == true {
+	if b {
 		return []byte("1"), nil
 	}
 
