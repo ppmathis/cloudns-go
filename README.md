@@ -1,10 +1,11 @@
 # cloudns-go
 
-[![License](https://img.shields.io/badge/license-GPL--3.0+-blue.svg)](https://github.com/snapserv/cloudns-go/LICENSE.txt)
-[![Documentation](http://img.shields.io/badge/docs-godoc.org-blue.svg)](https://godoc.org/github.com/snapserv/cloudns-go)
+[![License](https://img.shields.io/badge/license-GPL--3.0+-blue.svg)](https://github.com/ppmathis/cloudns-go/LICENSE.txt)
+[![Documentation](http://img.shields.io/badge/docs-godoc.org-blue.svg)](https://godoc.org/github.com/ppmathis/cloudns-go)
 [![Go Compatibility](https://img.shields.io/badge/golang-1.13-brightgreen.svg)](#)
-[![GitHub issues](https://img.shields.io/github/issues/snapserv/cloudns-go.svg)](https://github.com/snapserv/cloudns-go/issues)
-[![Coverage Status](https://coveralls.io/repos/github/snapserv/cloudns-go/badge.svg?branch=master)](https://coveralls.io/github/snapserv/cloudns-go?branch=master)
+[![GitHub issues](https://img.shields.io/github/issues/ppmathis/cloudns-go.svg)](https://github.com/ppmathis/cloudns-go/issues)
+[![Coverage Status](https://coveralls.io/repos/github/ppmathis/cloudns-go/badge.svg?branch=master)](https://coveralls.
+io/github/ppmathis/cloudns-go?branch=master)
 [![Copyright](https://img.shields.io/badge/copyright-Pascal_Mathis-lightgrey.svg)](#)
 
 ## Summary
@@ -35,7 +36,7 @@ which currently consists of:
 - `client.Records`: Manage records inside a specific DNS zone
 
 You can find more information about the specific methods and structures of cloudns-go by visiting the
-[official documentation on godoc.org](https://godoc.org/github.com/snapserv/cloudns-go). 
+[official documentation on godoc.org](https://godoc.org/github.com/ppmathis/cloudns-go). 
 
 
 ## Example
@@ -43,7 +44,7 @@ You can find more information about the specific methods and structures of cloud
 package main
 
 import (
-	cloudns "github.com/snapserv/cloudns-go"
+	cloudns "github.com/ppmathis/cloudns-go"
 	"context"
 	"fmt"
 )
