@@ -90,8 +90,8 @@ type Record struct {
 
 // SRV represents parameters specifically for SRV records
 type SRV struct {
-	Weight   uint16 `json:"weight,string,omitempty"`
-	Port     uint16 `json:"port,string,omitempty"`
+	Weight uint16 `json:"weight,string,omitempty"`
+	Port   uint16 `json:"port,string,omitempty"`
 }
 
 // RP represents parameters specifically for RP records

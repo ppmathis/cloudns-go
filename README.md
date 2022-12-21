@@ -11,7 +11,7 @@ io/github/ppmathis/cloudns-go?branch=master)
 ## Summary
 This is an unofficial library for the ClouDNS HTTP API written in Go. Currently all operations related to account,
 zone and record management have been fully implemented. Further information about the API can be found at the
- [official ClouDNS website](https://www.cloudns.net/).
+[official ClouDNS website](https://www.cloudns.net/).
 
 ## Quick Start
 Initialize cloudns-go by creating a new API client instance with your preferred choice of credentials, which is a
@@ -36,7 +36,7 @@ which currently consists of:
 - `client.Records`: Manage records inside a specific DNS zone
 
 You can find more information about the specific methods and structures of cloudns-go by visiting the
-[official documentation on godoc.org](https://godoc.org/github.com/ppmathis/cloudns-go). 
+[official documentation on godoc.org](https://godoc.org/github.com/ppmathis/cloudns-go).
 
 
 ## Example
@@ -44,25 +44,25 @@ You can find more information about the specific methods and structures of cloud
 package main
 
 import (
-	cloudns "github.com/ppmathis/cloudns-go"
 	"context"
 	"fmt"
+	"github.com/ppmathis/cloudns-go"
 )
 
 func main() {
-    client, _ := cloudns.New(
-        cloudns.AuthUserID(42, "cloudns-rocks"),
-    )
+	client, _ := cloudns.New(
+		cloudns.AuthUserID(42, "cloudns-rocks"),
+	)
 
-    zone, _ := client.Zones.Get(context.TODO(), "api-example.com")
-    result1, _ := client.Zones.SetActive(context.TODO(), zone.Name, true)
-    
-    record := cloudns.NewRecord(RecordTypeA, "localhost", "1.2.3.4", 3600)
-    result2, _ := client.Records.Create(context.TODO(), zone.Name, record)
+	zone, _ := client.Zones.Get(context.TODO(), "api-example.com")
+	result1, _ := client.Zones.SetActive(context.TODO(), zone.Name, true)
 
-    fmt.Printf("Zone: %+v\n", zone)
-    fmt.Printf("Record: %+v\n", record)
-    fmt.Printf("Result of `Zones.SetActive()`: %+v\n", result1)
-    fmt.Printf("Result of `Records.Create()`: %+v\n", result2)
+	record := cloudns.NewRecord(cloudns.RecordTypeA, "localhost", "1.2.3.4", 3600)
+	result2, _ := client.Records.Create(context.TODO(), zone.Name, record)
+
+	fmt.Printf("Zone: %+v\n", zone)
+	fmt.Printf("Record: %+v\n", record)
+	fmt.Printf("Result of `Zones.SetActive()`: %+v\n", result1)
+	fmt.Printf("Result of `Records.Create()`: %+v\n", result2)
 }
 ```
