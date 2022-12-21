@@ -4,7 +4,7 @@
 [![Documentation](http://img.shields.io/badge/docs-godoc.org-blue.svg)](https://godoc.org/github.com/ppmathis/cloudns-go)
 [![Go Compatibility](https://img.shields.io/badge/golang-1.13+-brightgreen.svg)](#)
 [![GitHub issues](https://img.shields.io/github/issues/ppmathis/cloudns-go.svg)](https://github.com/ppmathis/cloudns-go/issues)
-[![Coverage Status](https://codecov.io/gh/ppmathis/cloudns-go/branch/master/graph/badge.svg?token=DMZR0O1H69)](https://codecov.io/gh/ppmathis/cloudns-go)
+[![Code Coverage](https://codecov.io/gh/ppmathis/cloudns-go/branch/main/graph/badge.svg?token=DMZR0O1H69)](https://codecov.io/gh/ppmathis/cloudns-go)
 [![Copyright](https://img.shields.io/badge/copyright-Pascal_Mathis-lightgrey.svg)](#)
 
 ## Summary
