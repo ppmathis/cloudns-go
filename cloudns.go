@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 )
@@ -117,7 +117,7 @@ func (c *Client) makeRequest(ctx context.Context, method, endpoint string, param
 		}
 
 		req.Header.Set("Content-Type", "application/json")
-		req.Body = ioutil.NopCloser(bytes.NewBuffer(jsonBody))
+		req.Body = io.NopCloser(bytes.NewBuffer(jsonBody))
 	}
 
 	return req, nil
@@ -130,7 +130,7 @@ func (c *Client) doRequest(req *http.Request, target interface{}) (*http.Respons
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(resp.Body)
+	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, ErrHTTPRequest.wrap(err)
 	}
