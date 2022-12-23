@@ -257,7 +257,12 @@ func TestRecordService_DisableDynamicURL(t *testing.T) {
 	record, teardown := setupWithRecord(t)
 	defer teardown()
 
-	_, err := client.Records.DisableDynamicURL(ctx, testDomain, record.ID)
+	_, err := client.Records.GetDynamicURL(ctx, testDomain, record.ID)
+	if err != nil {
+		t.Fatalf("Records.GetDynamicURL() returned error: %v", err)
+	}
+
+	_, err = client.Records.DisableDynamicURL(ctx, testDomain, record.ID)
 	if err != nil {
 		t.Fatalf("Records.DisableDynamicURL() returned error: %v", err)
 	}
