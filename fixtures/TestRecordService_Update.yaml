@@ -1,139 +1,207 @@
 ---
-version: 1
+version: 2
 interactions:
-- request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"0ileQ0wIMtw5EWIl","record":"127.0.0.1","record-type":"A","ttl":3600}'
-    form: {}
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      User-Agent:
-      - cloudns-go/test
-    url: https://api.cloudns.net/dns/add-record.json
-    method: POST
-  response:
-    body: '{"status":"Success","statusDescription":"The record was added successfully.","data":{"id":273120512}}'
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 23 Dec 2022 20:32:59 GMT
-      Server:
-      - nginx
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubdomains; preload
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-    status: 200 OK
-    code: 200
-    duration: ""
-- request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"0ileQ0wIMtw5EWIl","type":"A"}'
-    form: {}
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      User-Agent:
-      - cloudns-go/test
-    url: https://api.cloudns.net/dns/records.json
-    method: POST
-  response:
-    body: '{"273120512":{"id":"273120512","type":"A","host":"0ileq0wimtw5ewil","record":"127.0.0.1","dynamicurl_status":0,"failover":"0","ttl":"3600","status":1}}'
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 23 Dec 2022 20:32:59 GMT
-      Server:
-      - nginx
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubdomains; preload
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-    status: 200 OK
-    code: 200
-    duration: ""
-- request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"0ileq0wimtw5ewil","record":"127.0.0.2","record-id":273120512,"record-type":"A","ttl":3600}'
-    form: {}
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      User-Agent:
-      - cloudns-go/test
-    url: https://api.cloudns.net/dns/mod-record.json
-    method: POST
-  response:
-    body: '{"status":"Success","statusDescription":"The record was modified successfully."}'
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 23 Dec 2022 20:32:59 GMT
-      Server:
-      - nginx
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubdomains; preload
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-    status: 200 OK
-    code: 200
-    duration: ""
-- request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":273120512}'
-    form: {}
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      User-Agent:
-      - cloudns-go/test
-    url: https://api.cloudns.net/dns/delete-record.json
-    method: POST
-  response:
-    body: '{"status":"Success","statusDescription":"The record was deleted successfully."}'
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 23 Dec 2022 20:32:59 GMT
-      Server:
-      - nginx
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubdomains; preload
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-    status: 200 OK
-    code: 200
-    duration: ""
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.cloudns.net
+        remote_addr: ""
+        request_uri: ""
+        body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"8jDkMb9RbV7t0CD5","record":"127.0.0.1","record-type":"A","ttl":3600}'
+        form: {}
+        headers:
+            Accept:
+                - application/json
+            Content-Type:
+                - application/json
+            User-Agent:
+                - cloudns-go/test
+        url: https://api.cloudns.net/dns/add-record.json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"status":"Success","statusDescription":"The record was added successfully.","data":{"id":273123235}}'
+        headers:
+            Content-Type:
+                - application/json
+            Date:
+                - Fri, 23 Dec 2022 20:58:44 GMT
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=31536000; includeSubdomains; preload
+            Vary:
+                - Accept-Encoding
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - 1; mode=block
+        status: 200 OK
+        code: 200
+        duration: 159.7525ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.cloudns.net
+        remote_addr: ""
+        request_uri: ""
+        body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"8jDkMb9RbV7t0CD5","type":"A"}'
+        form: {}
+        headers:
+            Accept:
+                - application/json
+            Content-Type:
+                - application/json
+            User-Agent:
+                - cloudns-go/test
+        url: https://api.cloudns.net/dns/records.json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"273123235":{"id":"273123235","type":"A","host":"8jdkmb9rbv7t0cd5","record":"127.0.0.1","dynamicurl_status":0,"failover":"0","ttl":"3600","status":1}}'
+        headers:
+            Content-Type:
+                - application/json
+            Date:
+                - Fri, 23 Dec 2022 20:58:44 GMT
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=31536000; includeSubdomains; preload
+            Vary:
+                - Accept-Encoding
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - 1; mode=block
+        status: 200 OK
+        code: 200
+        duration: 87.642709ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.cloudns.net
+        remote_addr: ""
+        request_uri: ""
+        body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"8jdkmb9rbv7t0cd5","record":"127.0.0.2","record-id":273123235,"record-type":"A","ttl":3600}'
+        form: {}
+        headers:
+            Accept:
+                - application/json
+            Content-Type:
+                - application/json
+            User-Agent:
+                - cloudns-go/test
+        url: https://api.cloudns.net/dns/mod-record.json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"status":"Success","statusDescription":"The record was modified successfully."}'
+        headers:
+            Content-Type:
+                - application/json
+            Date:
+                - Fri, 23 Dec 2022 20:58:44 GMT
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=31536000; includeSubdomains; preload
+            Vary:
+                - Accept-Encoding
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - 1; mode=block
+        status: 200 OK
+        code: 200
+        duration: 201.657458ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.cloudns.net
+        remote_addr: ""
+        request_uri: ""
+        body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":273123235}'
+        form: {}
+        headers:
+            Accept:
+                - application/json
+            Content-Type:
+                - application/json
+            User-Agent:
+                - cloudns-go/test
+        url: https://api.cloudns.net/dns/delete-record.json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"status":"Success","statusDescription":"The record was deleted successfully."}'
+        headers:
+            Content-Type:
+                - application/json
+            Date:
+                - Fri, 23 Dec 2022 20:58:45 GMT
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=31536000; includeSubdomains; preload
+            Vary:
+                - Accept-Encoding
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - 1; mode=block
+        status: 200 OK
+        code: 200
+        duration: 137.956417ms

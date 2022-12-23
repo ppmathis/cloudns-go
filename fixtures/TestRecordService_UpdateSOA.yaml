@@ -1,71 +1,105 @@
 ---
-version: 1
+version: 2
 interactions:
-- request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com"}'
-    form: {}
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      User-Agent:
-      - cloudns-go/test
-    url: https://api.cloudns.net/dns/soa-details.json
-    method: POST
-  response:
-    body: '{"serialNumber":"2022122400","primaryNS":"ns1.api-example.com","adminMail":"nQmIlYSIjWPcOuAR@api-example.com","refresh":"7200","retry":"1800","expire":"1209600","defaultTTL":"3600"}'
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 23 Dec 2022 20:32:58 GMT
-      Server:
-      - nginx
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubdomains; preload
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-    status: 200 OK
-    code: 200
-    duration: ""
-- request:
-    body: '{"admin-mail":"tqGYy551m4I699Uc@api-example.com","auth-id":"[filtered]","auth-password":"[filtered]","default-ttl":3600,"domain-name":"api-example.com","expire":1209600,"primary-ns":"ns1.api-example.com","refresh":7200,"retry":1800}'
-    form: {}
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      User-Agent:
-      - cloudns-go/test
-    url: https://api.cloudns.net/dns/modify-soa.json
-    method: POST
-  response:
-    body: '{"status":"Success","statusDescription":"The SOA record was modified successfully."}'
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 23 Dec 2022 20:32:58 GMT
-      Server:
-      - nginx
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubdomains; preload
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-    status: 200 OK
-    code: 200
-    duration: ""
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.cloudns.net
+        remote_addr: ""
+        request_uri: ""
+        body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com"}'
+        form: {}
+        headers:
+            Accept:
+                - application/json
+            Content-Type:
+                - application/json
+            User-Agent:
+                - cloudns-go/test
+        url: https://api.cloudns.net/dns/soa-details.json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"serialNumber":"2022122471","primaryNS":"ns1.api-example.com","adminMail":"tqGYy551m4I699Uc@api-example.com","refresh":"7200","retry":"1800","expire":"1209600","defaultTTL":"3600"}'
+        headers:
+            Content-Type:
+                - application/json
+            Date:
+                - Fri, 23 Dec 2022 20:58:42 GMT
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=31536000; includeSubdomains; preload
+            Vary:
+                - Accept-Encoding
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - 1; mode=block
+        status: 200 OK
+        code: 200
+        duration: 83.526584ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.cloudns.net
+        remote_addr: ""
+        request_uri: ""
+        body: '{"admin-mail":"2xuP7ewOGcy1I6hU@api-example.com","auth-id":"[filtered]","auth-password":"[filtered]","default-ttl":3600,"domain-name":"api-example.com","expire":1209600,"primary-ns":"ns1.api-example.com","refresh":7200,"retry":1800}'
+        form: {}
+        headers:
+            Accept:
+                - application/json
+            Content-Type:
+                - application/json
+            User-Agent:
+                - cloudns-go/test
+        url: https://api.cloudns.net/dns/modify-soa.json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"status":"Success","statusDescription":"The SOA record was modified successfully."}'
+        headers:
+            Content-Type:
+                - application/json
+            Date:
+                - Fri, 23 Dec 2022 20:58:42 GMT
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=31536000; includeSubdomains; preload
+            Vary:
+                - Accept-Encoding
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - 1; mode=block
+        status: 200 OK
+        code: 200
+        duration: 111.424458ms

@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/dnaeon/go-vcr/cassette"
-	"github.com/dnaeon/go-vcr/recorder"
+	"gopkg.in/dnaeon/go-vcr.v3/cassette"
+	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"log"
 	"net/http"
 	"os"
@@ -27,19 +27,23 @@ func setup(t *testing.T) func() {
 	var err error
 
 	// Determine recorder mode based on environment
-	recorderMode := recorder.ModeReplaying
+	recorderMode := recorder.ModeReplayWithNewEpisodes
 	if os.Getenv("CLOUDNS_SKIP_FIXTURES") != "" {
-		recorderMode = recorder.ModeDisabled
+		recorderMode = recorder.ModePassthrough
 	}
 
 	// Initialize test fixtures with go-vcr for automated recording
-	vcr, err = recorder.NewAsMode("fixtures/"+t.Name(), recorderMode, nil)
+	vcr, err = recorder.NewWithOptions(&recorder.Options{
+		CassetteName:       "fixtures/" + t.Name(),
+		Mode:               recorderMode,
+		SkipRequestLatency: true,
+	})
 	if err != nil {
 		log.Fatalf("could not initialize test fixtures: %v", err)
 	}
-	vcr.AddFilter(filterCookies)
-	vcr.AddFilter(filterCredentials)
-	vcr.AddFilter(filterZoneListing)
+	vcr.AddHook(filterCookies, recorder.AfterCaptureHook)
+	vcr.AddHook(filterCredentials, recorder.AfterCaptureHook)
+	vcr.AddHook(filterZoneListing, recorder.AfterCaptureHook)
 
 	// Initialize API client with go-vcr as HTTP client transport
 	client, err = New(

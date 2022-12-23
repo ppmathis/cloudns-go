@@ -1,37 +1,54 @@
 ---
-version: 1
+version: 2
 interactions:
-- request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com"}'
-    form: {}
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-      User-Agent:
-      - cloudns-go/test
-    url: https://api.cloudns.net/dns/update-status.json
-    method: POST
-  response:
-    body: '[{"server":"dns1.cloudns.net","ip4":"185.136.96.77","ip6":"2a06:fb00:1::1:77","updated":false},{"server":"dns2.cloudns.net","ip4":"185.136.97.77","ip6":"2a06:fb00:1::2:77","updated":false},{"server":"dns5.cloudns.net","ip4":"185.136.98.77","ip6":"2a06:fb00:1::3:77","updated":false},{"server":"dns6.cloudns.net","ip4":"185.136.99.77","ip6":"2a06:fb00:1::4:77","updated":false}]'
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 23 Dec 2022 20:33:17 GMT
-      Server:
-      - nginx
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubdomains; preload
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-    status: 200 OK
-    code: 200
-    duration: ""
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.cloudns.net
+        remote_addr: ""
+        request_uri: ""
+        body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com"}'
+        form: {}
+        headers:
+            Accept:
+                - application/json
+            Content-Type:
+                - application/json
+            User-Agent:
+                - cloudns-go/test
+        url: https://api.cloudns.net/dns/update-status.json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '[{"server":"dns1.cloudns.net","ip4":"185.136.96.77","ip6":"2a06:fb00:1::1:77","updated":false},{"server":"dns2.cloudns.net","ip4":"185.136.97.77","ip6":"2a06:fb00:1::2:77","updated":false},{"server":"dns5.cloudns.net","ip4":"185.136.98.77","ip6":"2a06:fb00:1::3:77","updated":false},{"server":"dns6.cloudns.net","ip4":"185.136.99.77","ip6":"2a06:fb00:1::4:77","updated":false}]'
+        headers:
+            Content-Type:
+                - application/json
+            Date:
+                - Fri, 23 Dec 2022 20:59:19 GMT
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=31536000; includeSubdomains; preload
+            Vary:
+                - Accept-Encoding
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - 1; mode=block
+        status: 200 OK
+        code: 200
+        duration: 275.058875ms
