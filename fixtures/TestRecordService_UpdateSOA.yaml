@@ -14,12 +14,12 @@ interactions:
     url: https://api.cloudns.net/dns/soa-details.json
     method: POST
   response:
-    body: '{"serialNumber":"2019124089","primaryNS":"ns1.ssx.li","adminMail":"h7TT84lu33iEsG0S@api-example.com","refresh":"7200","retry":"1800","expire":"1209600","defaultTTL":"300"}'
+    body: '{"serialNumber":"2022122400","primaryNS":"ns1.api-example.com","adminMail":"nQmIlYSIjWPcOuAR@api-example.com","refresh":"7200","retry":"1800","expire":"1209600","defaultTTL":"3600"}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:44 GMT
+      - Fri, 23 Dec 2022 20:32:58 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -36,7 +36,7 @@ interactions:
     code: 200
     duration: ""
 - request:
-    body: '{"admin-mail":"wfiuXJSA2TbP2qt1@api-example.com","auth-id":"[filtered]","auth-password":"[filtered]","default-ttl":300,"domain-name":"api-example.com","expire":1209600,"primary-ns":"ns1.ssx.li","refresh":7200,"retry":1800}'
+    body: '{"admin-mail":"tqGYy551m4I699Uc@api-example.com","auth-id":"[filtered]","auth-password":"[filtered]","default-ttl":3600,"domain-name":"api-example.com","expire":1209600,"primary-ns":"ns1.api-example.com","refresh":7200,"retry":1800}'
     form: {}
     headers:
       Accept:
@@ -53,7 +53,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:44 GMT
+      - Fri, 23 Dec 2022 20:32:58 GMT
       Server:
       - nginx
       Strict-Transport-Security:

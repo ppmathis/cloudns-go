@@ -14,12 +14,12 @@ interactions:
     url: https://api.cloudns.net/dns/get-zones-stats.json
     method: POST
   response:
-    body: '{"count":"24","limit":"50"}'
+    body: '{"count":"35","limit":"75"}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:53 GMT
+      - Fri, 23 Dec 2022 20:33:17 GMT
       Server:
       - nginx
       Strict-Transport-Security:

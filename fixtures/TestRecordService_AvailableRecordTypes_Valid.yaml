@@ -14,12 +14,12 @@ interactions:
     url: https://api.cloudns.net/dns/get-available-record-types.json
     method: POST
   response:
-    body: '["A","AAAA","MX","CNAME","TXT","SPF","NS","SRV","WR","ALIAS","RP","SSHFP","NAPTR","CAA","TLSA"]'
+    body: '["A","AAAA","MX","CNAME","TXT","SPF","NS","SRV","WR","ALIAS","RP","SSHFP","NAPTR","CAA","TLSA","DS","CERT","PTR","HINFO","LOC","DNAME","SMIMEA","OPENPGPKEY"]'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:52 GMT
+      - Fri, 23 Dec 2022 20:33:04 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -48,12 +48,12 @@ interactions:
     url: https://api.cloudns.net/dns/get-available-record-types.json
     method: POST
   response:
-    body: '["PTR","NAPTR","NS","CNAME"]'
+    body: '["PTR","NAPTR","NS","CNAME","CERT","DS"]'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:52 GMT
+      - Fri, 23 Dec 2022 20:33:05 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -82,12 +82,12 @@ interactions:
     url: https://api.cloudns.net/dns/get-available-record-types.json
     method: POST
   response:
-    body: '["PTR","NAPTR","NS","CNAME"]'
+    body: '["PTR","NAPTR","NS","CNAME","CERT","DS"]'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:52 GMT
+      - Fri, 23 Dec 2022 20:33:05 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -116,12 +116,12 @@ interactions:
     url: https://api.cloudns.net/dns/get-available-record-types.json
     method: POST
   response:
-    body: '["A","AAAA","MX","CNAME","TXT","SPF","NS","SRV","WR","ALIAS","RP","SSHFP","NAPTR","CAA","TLSA"]'
+    body: '["A","AAAA","MX","CNAME","TXT","SPF","NS","SRV","WR","ALIAS","RP","SSHFP","NAPTR","CAA","TLSA","DS","CERT","PTR","HINFO","LOC","DNAME","SMIMEA","OPENPGPKEY"]'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:52 GMT
+      - Fri, 23 Dec 2022 20:33:05 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -155,7 +155,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:53 GMT
+      - Fri, 23 Dec 2022 20:33:05 GMT
       Server:
       - nginx
       Strict-Transport-Security:

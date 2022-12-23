@@ -19,7 +19,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:53 GMT
+      - Fri, 23 Dec 2022 20:39:49 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -48,12 +48,12 @@ interactions:
     url: https://api.cloudns.net/dns/list-zones.json
     method: POST
   response:
-    body: '[{"name":"0.8.8.e.6.0.a.2.ip6.arpa","type":"slave","zone":"ipv6","status":"1"},{"name":"0.e.4.0.c.7.6.0.1.0.0.2.ip6.arpa","type":"slave","zone":"ipv6","status":"1"},{"name":"210.133.185.in-addr.arpa","type":"slave","zone":"ipv4","status":"1"},{"name":"api-example-2.com","type":"master","zone":"domain","status":"1"},{"name":"api-example.com","type":"master","zone":"domain","status":"1"},{"name":"as200753.com","type":"slave","zone":"domain","status":"1"},{"name":"as200753.net","type":"slave","zone":"domain","status":"1"},{"name":"bsl1.ssx.li","type":"master","zone":"domain","status":"1"},{"name":"core.mx","type":"slave","zone":"domain","status":"1"},{"name":"failover.ch","type":"master","zone":"domain","status":"1"},{"name":"home.ssx.li","type":"master","zone":"domain","status":"1"},{"name":"pascalmathis.com","type":"slave","zone":"domain","status":"1"},{"name":"pascalmathis.me","type":"slave","zone":"domain","status":"1"},{"name":"pascalmathis.net","type":"slave","zone":"domain","status":"1"},{"name":"ppmathis.ch","type":"slave","zone":"domain","status":"1"},{"name":"ppmathis.com","type":"slave","zone":"domain","status":"1"},{"name":"smx.li","type":"slave","zone":"domain","status":"1"},{"name":"snapserv.ch","type":"slave","zone":"domain","status":"1"},{"name":"snapserv.link","type":"slave","zone":"domain","status":"1"},{"name":"snapserv.net","type":"slave","zone":"domain","status":"1"},{"name":"snapserv.org","type":"slave","zone":"domain","status":"1"},{"name":"ssx.li","type":"master","zone":"domain","status":"1"},{"name":"template.ssx.li","type":"master","zone":"domain","status":"1"},{"name":"zig.pw","type":"slave","zone":"domain","status":"1"}]'
+    body: '[{"group":"None","hasBulk":false,"isUpdated":1,"name":"api-example.com","serial":"2022122471","status":"1","type":"master","zone":"domain"}]'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:53 GMT
+      - Fri, 23 Dec 2022 20:39:49 GMT
       Server:
       - nginx
       Strict-Transport-Security:

@@ -14,13 +14,13 @@ interactions:
     url: https://api.cloudns.net/dns/records-export.json
     method: POST
   response:
-    body: '{"status":"Success","zone":"$ORIGIN api-example.com.\n@\t300\tIN\tSOA\tns1.ssx.li.
-      wfiuXJSA2TbP2qt1.api-example.com. 2019124109 7200 1800 1209600 300\n@\t3600\tIN\tA\t1.2.3.4\n@\t3600\tIN\tNS\tdns1.cloudns.net.\n@\t3600\tIN\tNS\tdns2.cloudns.net.\n@\t3600\tIN\tNS\tdns5.cloudns.net.\n@\t3600\tIN\tNS\tdns6.cloudns.net.\n"}'
+    body: '{"status":"Success","zone":"$ORIGIN api-example.com.\n@\t3600\tIN\tSOA\tns1.api-example.com.
+      tqGYy551m4I699Uc.api-example.com. 2022122420 7200 1800 1209600 3600\n@\t3600\tIN\tA\t1.2.3.4\n@\t3600\tIN\tNS\tdns1.cloudns.net.\n@\t3600\tIN\tNS\tdns2.cloudns.net.\n@\t3600\tIN\tNS\tdns5.cloudns.net.\n@\t3600\tIN\tNS\tdns6.cloudns.net.\n"}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:45 GMT
+      - Fri, 23 Dec 2022 20:33:02 GMT
       Server:
       - nginx
       Strict-Transport-Security:

@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"localhost","port":0,"priority":0,"record":"127.0.0.1","record-type":"A","ttl":3600,"weight":0}'
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"localhost","record":"127.0.0.1","record-type":"A","ttl":3600}'
     form: {}
     headers:
       Accept:
@@ -14,12 +14,12 @@ interactions:
     url: https://api.cloudns.net/dns/add-record.json
     method: POST
   response:
-    body: '{"status":"Success","statusDescription":"The record was added successfully.","data":{"id":194582271}}'
+    body: '{"status":"Success","statusDescription":"The record was added successfully.","data":{"id":273120511}}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:44 GMT
+      - Fri, 23 Dec 2022 20:32:59 GMT
       Server:
       - nginx
       Strict-Transport-Security:

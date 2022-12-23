@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"pRxYZaKSEpzHy2jw","port":0,"priority":0,"record":"127.0.0.1","record-type":"A","ttl":3600,"weight":0}'
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"WhFbEyy9SuCBywJZ","record":"127.0.0.1","record-type":"A","ttl":3600}'
     form: {}
     headers:
       Accept:
@@ -14,12 +14,12 @@ interactions:
     url: https://api.cloudns.net/dns/add-record.json
     method: POST
   response:
-    body: '{"status":"Success","statusDescription":"The record was added successfully.","data":{"id":194582282}}'
+    body: '{"status":"Success","statusDescription":"The record was added successfully.","data":{"id":273120524}}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:48 GMT
+      - Fri, 23 Dec 2022 20:33:03 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -36,7 +36,7 @@ interactions:
     code: 200
     duration: ""
 - request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"pRxYZaKSEpzHy2jw","type":"A"}'
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","host":"WhFbEyy9SuCBywJZ","type":"A"}'
     form: {}
     headers:
       Accept:
@@ -48,12 +48,12 @@ interactions:
     url: https://api.cloudns.net/dns/records.json
     method: POST
   response:
-    body: '{"194582282":{"id":"194582282","type":"A","host":"prxyzaksepzhy2jw","record":"127.0.0.1","dynamicurl_status":0,"failover":"0","ttl":"3600","status":1}}'
+    body: '{"273120524":{"id":"273120524","type":"A","host":"whfbeyy9sucbywjz","record":"127.0.0.1","dynamicurl_status":0,"failover":"0","ttl":"3600","status":1}}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:48 GMT
+      - Fri, 23 Dec 2022 20:33:03 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -70,7 +70,7 @@ interactions:
     code: 200
     duration: ""
 - request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":194582282}'
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":273120524}'
     form: {}
     headers:
       Accept:
@@ -82,12 +82,12 @@ interactions:
     url: https://api.cloudns.net/dns/get-dynamic-url.json
     method: POST
   response:
-    body: '{"host":"prxyzaksepzhy2jw.api-example.com","url":"https:\/\/ipv4.cloudns.net\/api\/dynamicURL\/?q=MTU3NjY3NzoxOTQ1ODIyODI6MjZiYzZkOWFlMjU4M2Y3NThmMWUyZDdmOWQ1MGEwMmIxYjVmNGFmNDcxYzYyN2FiNDljMmQ4MDcxYTVlODU0MQ"}'
+    body: '{"host":"whfbeyy9sucbywjz.api-example.com","url":"https:\/\/ipv4.cloudns.net\/api\/dynamicURL\/?q=NDYwNTk5MDoyNzMxMjA1MjQ6NDgyYmNkMjA3ZGI1MjdkNGQ0MDY2ZDlhMWRmN2EzYTg4NDBlODMzMjlkZDk4MjgwYzFlOWVlOTZkZWE0ZWQ5Yw"}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:50 GMT
+      - Fri, 23 Dec 2022 20:33:03 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -104,7 +104,7 @@ interactions:
     code: 200
     duration: ""
 - request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":194582282}'
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":273120524}'
     form: {}
     headers:
       Accept:
@@ -116,12 +116,12 @@ interactions:
     url: https://api.cloudns.net/dns/change-dynamic-url.json
     method: POST
   response:
-    body: '{"host":"prxyzaksepzhy2jw.api-example.com","url":"https:\/\/ipv4.cloudns.net\/api\/dynamicURL\/?q=MTU3NjY3NzoxOTQ1ODIyODI6NmQ1YzI5NTBhZTBlYzVhZDRjNzkyODM3OTk1MmU0ZTYwMDZmOWU4NWQ1ODczZWQ2YjJiZDY0YWY5NWNkZWRiOA"}'
+    body: '{"host":"whfbeyy9sucbywjz.api-example.com","url":"https:\/\/ipv4.cloudns.net\/api\/dynamicURL\/?q=NDYwNTk5MDoyNzMxMjA1MjQ6YTlkMjFlMDFlODA1OThhMWQ0ODc5YzdiNzk5ZjEwZGMxM2Q3OGZjNmM5Y2U5OGQwMTQ1NDJkODIxOWFiNDhjMQ"}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:52 GMT
+      - Fri, 23 Dec 2022 20:33:03 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -138,7 +138,7 @@ interactions:
     code: 200
     duration: ""
 - request:
-    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":194582282}'
+    body: '{"auth-id":"[filtered]","auth-password":"[filtered]","domain-name":"api-example.com","record-id":273120524}'
     form: {}
     headers:
       Accept:
@@ -155,7 +155,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:52 GMT
+      - Fri, 23 Dec 2022 20:33:04 GMT
       Server:
       - nginx
       Strict-Transport-Security:

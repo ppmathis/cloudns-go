@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -38,6 +39,7 @@ func setup(t *testing.T) func() {
 	}
 	vcr.AddFilter(filterCookies)
 	vcr.AddFilter(filterCredentials)
+	vcr.AddFilter(filterZoneListing)
 
 	// Initialize API client with go-vcr as HTTP client transport
 	client, err = New(
@@ -102,5 +104,32 @@ func filterCredentials(i *cassette.Interaction) error {
 	}
 
 	i.Request.Body = string(jsonBody)
+	return nil
+}
+
+func filterZoneListing(i *cassette.Interaction) error {
+	var retrievedZones []map[string]interface{}
+	var filteredZones []map[string]interface{}
+
+	if !strings.HasSuffix(i.Request.URL, "/list-zones.json") {
+		return nil
+	}
+
+	if err := json.Unmarshal([]byte(i.Response.Body), &retrievedZones); err != nil {
+		return fmt.Errorf("could not unmarshal request body as JSON for filtering: %w", err)
+	}
+
+	for _, zone := range retrievedZones {
+		if zone["name"] == testDomain {
+			filteredZones = append(filteredZones, zone)
+		}
+	}
+
+	jsonBody, err := json.Marshal(filteredZones)
+	if err != nil {
+		return fmt.Errorf("could not marshal filtered request body into JSON: %w", err)
+	}
+
+	i.Response.Body = string(jsonBody)
 	return nil
 }

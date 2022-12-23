@@ -14,12 +14,12 @@ interactions:
     url: https://api.cloudns.net/ip/get-my-ip.json
     method: POST
   response:
-    body: '{"ip":"2a05:41c0:2:1501:95fb:afe8:5896:42f4"}'
+    body: '{"ip":"2a05:41c0:13:9301:3cee:89ea:4032:572"}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:44 GMT
+      - Fri, 23 Dec 2022 20:32:58 GMT
       Server:
       - nginx
       Strict-Transport-Security:

@@ -14,12 +14,12 @@ interactions:
     url: https://api.cloudns.net/account/get-balance.json
     method: POST
   response:
-    body: '{"funds":"0.00"}'
+    body: '{"funds":"7.80"}'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:44 GMT
+      - Fri, 23 Dec 2022 20:32:58 GMT
       Server:
       - nginx
       Strict-Transport-Security:

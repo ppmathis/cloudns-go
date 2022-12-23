@@ -14,12 +14,12 @@ interactions:
     url: https://api.cloudns.net/dns/get-available-ttl.json
     method: POST
   response:
-    body: '[60,300,900,1800,3600,21600,43200,86400,172800,259200,604800,1209600,2592000]'
+    body: '[60,300,600,900,1800,3600,21600,43200,86400,172800,259200,604800,1209600,2592000]'
     headers:
       Content-Type:
       - application/json
       Date:
-      - Sat, 28 Dec 2019 20:11:52 GMT
+      - Fri, 23 Dec 2022 20:33:04 GMT
       Server:
       - nginx
       Strict-Transport-Security:
