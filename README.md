@@ -19,7 +19,7 @@ Initialize cloudns-go by creating a new API client instance with your preferred 
 combination of the API user password and an user ID, sub-user ID or sub-user name:
 
 ```go
-client, err := cloudns.New(
+    client, err := cloudns.New(
     // You must only specify one of these options
     // AuthUserID has the highest set of privileges and access to everything
     // AuthSubUserID and AuthSubUserName are restricted
@@ -45,26 +45,26 @@ You can find more information about the specific methods and structures of cloud
 package main
 
 import (
- "context"
- "fmt"
- "github.com/ppmathis/cloudns-go"
+    "context"
+    "fmt"
+    "github.com/ppmathis/cloudns-go"
 )
 
 func main() {
  client, _ := cloudns.New(
-  cloudns.AuthUserID(42, "cloudns-rocks"),
+    cloudns.AuthUserID(42, "cloudns-rocks"),
  )
 
- zone, _ := client.Zones.Get(context.TODO(), "api-example.com")
- result1, _ := client.Zones.SetActive(context.TODO(), zone.Name, true)
+    zone, _ := client.Zones.Get(context.TODO(), "api-example.com")
+    result1, _ := client.Zones.SetActive(context.TODO(), zone.Name, true)
 
- record := cloudns.NewRecord(cloudns.RecordTypeA, "localhost", "1.2.3.4", 3600)
- result2, _ := client.Records.Create(context.TODO(), zone.Name, record)
+    record := cloudns.NewRecord(cloudns.RecordTypeA, "localhost", "1.2.3.4", 3600)
+    result2, _ := client.Records.Create(context.TODO(), zone.Name, record)
 
- fmt.Printf("Zone: %+v\n", zone)
- fmt.Printf("Record: %+v\n", record)
- fmt.Printf("Result of `Zones.SetActive()`: %+v\n", result1)
- fmt.Printf("Result of `Records.Create()`: %+v\n", result2)
+    fmt.Printf("Zone: %+v\n", zone)
+    fmt.Printf("Record: %+v\n", record)
+    fmt.Printf("Result of `Zones.SetActive()`: %+v\n", result1)
+    fmt.Printf("Result of `Records.Create()`: %+v\n", result2)
 }
 ```
 
