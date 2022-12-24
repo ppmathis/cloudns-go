@@ -19,7 +19,7 @@ Initialize cloudns-go by creating a new API client instance with your preferred 
 combination of the API user password and an user ID, sub-user ID or sub-user name:
 
 ```go
-    client, err := cloudns.New(
+client, err := cloudns.New(
     // You must only specify one of these options
     // AuthUserID has the highest set of privileges and access to everything
     // AuthSubUserID and AuthSubUserName are restricted
@@ -51,9 +51,9 @@ import (
 )
 
 func main() {
- client, _ := cloudns.New(
-    cloudns.AuthUserID(42, "cloudns-rocks"),
- )
+    client, _ := cloudns.New(
+        cloudns.AuthUserID(42, "cloudns-rocks"),
+    )
 
     zone, _ := client.Zones.Get(context.TODO(), "api-example.com")
     result1, _ := client.Zones.SetActive(context.TODO(), zone.Name, true)
