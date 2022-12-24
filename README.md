@@ -67,3 +67,9 @@ func main() {
  fmt.Printf("Result of `Records.Create()`: %+v\n", result2)
 }
 ```
+
+## Tutorials
+
+Visit the [tutorials section of the
+repository](./tutorials/) for in depth
+explanations on select elements of cloudns-go.
