@@ -8,6 +8,7 @@ import (
 
 const zoneAvailableNameserversURL = "/dns/available-name-servers.json"
 const zoneListURL = "/dns/list-zones.json"
+const zoneCreateUrl = "/dns/register.json"
 const zoneGetURL = "/dns/get-zone-info.json"
 const zoneTriggerUpdateURL = "/dns/update-zone.json"
 const zoneUpdateStatusURL = "/dns/update-status.json"
@@ -76,6 +77,47 @@ type ZoneUpdateStatus struct {
 	IPv4      string  `json:"ip4"`
 	IPv6      string  `json:"ip6"`
 	IsUpdated APIBool `json:"updated"`
+}
+
+type CreateZone struct {
+	Name     string   `json:"name"`
+	Type     ZoneType `json:"type"`
+	Ns       []string `json:"ns"`
+	MasterIp string   `json:"master_ip"`
+}
+
+// AsParams returns the HTTP parameters for a zone to use within the create zone API method
+func (zone CreateZone) AsParams() HTTPParams {
+	params := HTTPParams{
+		"domain-name": zone.Name,
+		"ns":          zone.Ns,
+	}
+	switch zone.Type {
+	case ZoneTypeMaster:
+		params["zone-type"] = "master"
+	case ZoneTypeGeoDNS:
+		params["zone-type"] = "geo-dns"
+	case ZoneTypeParked:
+		params["zone-type"] = "parked"
+	case ZoneTypeSlave:
+		params["zone-type"] = "slave"
+		params["master-ip"] = zone.MasterIp
+	case ZoneTypeUnknown:
+		params["zone-type"] = "unknown"
+	}
+
+	return params
+}
+
+// NewZone instantiates a new CreateZone which can be used within ClouDNS API methods. It does -not- add this zone
+// automatically.
+func NewZone(name string, zoneType ZoneType, ns []string, masterIp string) CreateZone {
+	return CreateZone{
+		Name:     name,
+		Type:     zoneType,
+		Ns:       ns,
+		MasterIp: masterIp,
+	}
 }
 
 // List returns all zones
@@ -178,6 +220,14 @@ func (svc *ZoneService) AvailableNameservers(ctx context.Context) (result []Name
 // Official Docs: https://www.cloudns.net/wiki/article/52/
 func (svc *ZoneService) GetUsage(ctx context.Context) (result ZoneUsage, err error) {
 	err = svc.api.request(ctx, "POST", zoneUsageURL, nil, nil, &result)
+	return
+}
+
+// Create a new zone
+func (svc *ZoneService) Create(ctx context.Context, zone CreateZone) (result StatusResult, err error) {
+	params := zone.AsParams()
+
+	err = svc.api.request(ctx, "POST", zoneCreateUrl, params, nil, &result)
 	return
 }
 
