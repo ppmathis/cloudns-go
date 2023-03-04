@@ -1,4 +1,4 @@
-module github.com/ppmathis/cloudns-go
+module github.com/inamvar/cloudns-go
 
 go 1.16
 

@@ -1,8 +1,9 @@
 package cloudns
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestZoneService_AvailableNameservers(t *testing.T) {
@@ -89,4 +90,15 @@ func TestZoneService_GetUsage(t *testing.T) {
 
 	_, err := client.Zones.GetUsage(ctx)
 	assert.NoError(t, err, "should not fail")
+}
+
+func TestZoneService_Create(t *testing.T) {
+	teardown := setup(t)
+	defer teardown()
+
+	zone := NewZone("sampion.io", ZoneTypeMaster, []string{}, "")
+	_, err := client.Zones.Create(ctx, zone)
+	if err != nil {
+		t.Fatalf("Records.Create() returned error: %v", err)
+	}
 }
